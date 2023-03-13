@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import Offer from '../../types/Offer';
-import PlaceCard from '../place-card/place-card';
+import OfferCard from '../offer-card/offer-card';
 
 type OfferListProps = {
   placesFound: number;
@@ -9,9 +10,11 @@ type OfferListProps = {
 
 function OfferList({ placesFound, offers, locationName }: OfferListProps): JSX.Element {
 
+  const [focusedItem, setFocusedItem] = useState<Offer>();
+
   const offerCards = offers.map((item) => {
     const keyValue = `offer-${item.id}`;
-    return <PlaceCard key={keyValue} item={item}></PlaceCard>;
+    return <OfferCard key={keyValue} item={item} setFocusedItem={(e) => setFocusedItem(e)} />;
   });
 
   return (
@@ -50,7 +53,9 @@ function OfferList({ placesFound, offers, locationName }: OfferListProps): JSX.E
         </div>
       </section>
       <div className="cities__right-section">
-        <section className="cities__map map"></section>
+        <section className="cities__map map">
+          {focusedItem?.id}
+        </section>
       </div>
     </div>
   );
