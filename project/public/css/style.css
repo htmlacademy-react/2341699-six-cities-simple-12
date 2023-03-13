@@ -1,0 +1,45 @@
+.error404-header {
+  text-align: center;
+  margin-top: 10rem;
+  font-size: 2rem;
+  font-weight: 500;
+  color: red;
+}
+
+.error404-subheader {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: grey;
+}
+
+.error404-details {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 500;
+  font-style: oblique;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  color: gray;
+}
+
+.error404-nav {
+  display: flex;
+  justify-content: center;
+}
+
+
+.error404-nav a {
+  border: solid 1px white;
+  padding: 9px 21px;
+  background-color: #4481c3;
+  color: white;
+  -webkit-transform: skew(-15deg);
+  transform: skew(-15deg);
+  border-radius: 3px;
+  font-size: 19px;
+  line-height: 1.211;
+  font-weight: 300;
+  font-style: oblique;
+  text-shadow: 1px 0 0, 0.5px 0 0, -1px 0 0;
+}

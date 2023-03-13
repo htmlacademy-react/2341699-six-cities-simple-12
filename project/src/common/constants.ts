@@ -1,3 +1,5 @@
+export const ApiUrl = 'https://12.react.pages.academy/six-cities-simple';
+
 export const Locations = [
   'Paris',
   'Cologne',

@@ -5,24 +5,30 @@ import Main from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/nof-found-page';
+import Offer from '../../types/Offer';
+import { useState } from 'react';
 
 type AppProps = {
   placesFound: number;
+  offers: Offer[];
 };
 
-function App(props: AppProps): JSX.Element {
+function App({ placesFound, offers }: AppProps): JSX.Element {
+
+  const [authData, setAuthData] = useState(false);
+
+  const handleChangeAuth = (isAuthorised: boolean) => {
+    setAuthData(isAuthorised);
+  };
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<Main placesFound={props.placesFound} />} />
-          <Route path={AppRoute.Login} element={<LoginPage />} />
+        <Route path={AppRoute.Root} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
+          <Route index element={<Main placesFound={placesFound} offers={offers} />} />
+          <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
 
-          <Route path={AppRoute.Offer}>
-            <Route index element={<Main placesFound={props.placesFound} />} />
-            <Route path=":id" element={<PropertyPage />} />
-          </Route>
+          <Route path={`${AppRoute.Offer}/:id`} element={<PropertyPage offers={offers} />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

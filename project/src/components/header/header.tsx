@@ -1,8 +1,19 @@
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-function Header(): JSX.Element {
+type HeaderProps = {
+  isAuthorised: boolean;
+  changeAuth: (isAuthorised: boolean) => void;
+};
 
-  const userLogged = document.location.pathname !== '/login';
+type SignOutLinkProps = {
+  changeAuth: (isAuthorised: boolean) => void;
+};
+
+function Header({ changeAuth, isAuthorised }: HeaderProps): JSX.Element {
+
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login';
 
   return (
     <header className="header">
@@ -16,10 +27,10 @@ function Header(): JSX.Element {
           <nav className="header__nav">
             <ul className="header__nav-list">
               <li className="header__nav-item user">
-                {!userLogged && <SignInLink />}
-                {userLogged && <UserProfile />}
+                {(!isLoginPage && !isAuthorised) && <SignInLink />}
+                {isAuthorised && <UserProfile />}
               </li>
-              {userLogged && <SignOutLink />}
+              {isAuthorised && <SignOutLink changeAuth={changeAuth} />}
             </ul>
           </nav>
         </div>
@@ -37,10 +48,10 @@ function UserProfile(): JSX.Element {
   );
 }
 
-function SignOutLink(): JSX.Element {
+function SignOutLink({ changeAuth }: SignOutLinkProps): JSX.Element {
   return (
     <li className="header__nav-item">
-      <Link className="header__nav-link" to="/">
+      <Link className="header__nav-link" to="/" onClick={() => changeAuth(false)}>
         <span className="header__signout">Sign out</span>
       </Link>
     </li>

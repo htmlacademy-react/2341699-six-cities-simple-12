@@ -3,9 +3,10 @@ import Offer from '../../types/Offer';
 
 type PlaceCardProps = {
   item: Offer;
+  setFocusedItem: (item?: Offer) => void;
 };
 
-function PlaceCard({ item }: PlaceCardProps): JSX.Element {
+function OfferCard({ item, setFocusedItem }: PlaceCardProps): JSX.Element {
 
   const ratingPercent = `${item.rating / 0.05}%`;
   const offerUrl = `/offer/${item.id}`;
@@ -15,7 +16,7 @@ function PlaceCard({ item }: PlaceCardProps): JSX.Element {
 
       {item.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
 
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className="cities__image-wrapper place-card__image-wrapper" onMouseEnter={() => setFocusedItem(item)} onMouseLeave={() => setFocusedItem()}>
         <Link to={offerUrl}>
           <img
             className="place-card__image"
@@ -52,4 +53,4 @@ function PlaceCard({ item }: PlaceCardProps): JSX.Element {
   );
 }
 
-export default PlaceCard;
+export default OfferCard;
