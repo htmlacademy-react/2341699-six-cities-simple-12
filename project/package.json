@@ -10,7 +10,8 @@
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "leaflet": "1.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -73,6 +74,7 @@
     "axios-mock-adapter": "^1.21.2",
     "eslint-config-htmlacademy": "^8.0.0",
     "faker": "^5.5.3",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "@types/leaflet": "1.9.2"
   }
 }

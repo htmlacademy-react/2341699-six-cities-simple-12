@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import Offer from '../../types/Offer';
+import Offer from '../../types/offer';
 import ReviewList from '../../components/review-list/review-list';
 
 type PropertyPageProps = {
@@ -75,7 +75,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
               </li>
             </ul>
             <div className="property__price">
-              <b className="property__price-value">&euro;120</b>
+              <b className="property__price-value">&euro;{offer?.price}</b>
               <span className="property__price-text">&nbsp;night</span>
             </div>
             <div className="property__inside">
