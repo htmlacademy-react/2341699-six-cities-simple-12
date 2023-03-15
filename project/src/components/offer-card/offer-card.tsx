@@ -8,8 +8,8 @@ type PlaceCardProps = {
 
 function OfferCard({ item, setFocusedItem }: PlaceCardProps): JSX.Element {
 
-  const ratingPercent = `${item.rating / 0.05}%`;
-  const offerUrl = `/offer/${item.id}`;
+  const ratingPercent = `${(item.rating / 0.05).toString()}%`;
+  const offerUrl = `/offer/${item.id.toString()}`;
 
   return (
     <article className="cities__card place-card">
