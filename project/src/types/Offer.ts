@@ -20,7 +20,7 @@ type Offer = {
       latitude: number;
       longitude: number;
       zoom: number;
-    }
+    };
     name: string;
   };
   isPremium: boolean;
