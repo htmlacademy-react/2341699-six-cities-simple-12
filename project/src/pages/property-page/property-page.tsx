@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import Offer from '../../types/offer';
 import ReviewList from '../../components/review-list/review-list';
+import { GetRatingPercent } from '../../common/utils';
 
 type PropertyPageProps = {
   offers: Offer[];
@@ -17,7 +18,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
     return (<Navigate to="/404" />);
   }
 
-  const ratingPercent = `${offer.rating / 0.05}%`;
+  const ratingPercent = GetRatingPercent(offer.rating);
 
   return (
     <Fragment>
