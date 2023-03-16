@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppRoute } from '../../common/constants';
+import { AppRoute, AUTH_STORAGE_KEY } from '../../common/constants';
 import Layout from '../layout';
 import Main from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -14,11 +14,26 @@ type AppProps = {
 
 function App({ offers }: AppProps): JSX.Element {
 
+  const userSigned = localStorage.getItem(AUTH_STORAGE_KEY);
+
   const [authData, setAuthData] = useState(false);
 
   const handleChangeAuth = (isAuthorised: boolean) => {
+
     setAuthData(isAuthorised);
+
+    // сохраняем состояние
+    if (!isAuthorised) {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    }
+    else {
+      localStorage.setItem(AUTH_STORAGE_KEY, String(isAuthorised));
+    }
   };
+
+  if (!authData && userSigned && Boolean(userSigned)) {
+    setAuthData(true);
+  }
 
   return (
     <BrowserRouter>

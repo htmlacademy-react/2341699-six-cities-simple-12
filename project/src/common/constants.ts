@@ -28,3 +28,5 @@ export const SORT_MENU_ITEMS = [
   'Price: high to low',
   'Top rated first'
 ];
+
+export const AUTH_STORAGE_KEY = 'UserSigned';
