@@ -3,6 +3,14 @@ import Offer from '../types/offer';
 export const Offers: Offer[] = [
   {
     id: 1,
+    images: [
+      'https://12.react.pages.academy/static/hotel/14.jpg',
+      'https://12.react.pages.academy/static/hotel/8.jpg',
+      'https://12.react.pages.academy/static/hotel/19.jpg',
+      'https://12.react.pages.academy/static/hotel/16.jpg',
+      'https://12.react.pages.academy/static/hotel/10.jpg',
+      'https://12.react.pages.academy/static/hotel/15.jpg',
+    ],
     description: 'I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station.\nThe apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath.\n A terrace can be used in summer.',
     goods: [
       'Washer',
@@ -41,6 +49,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 2,
+    images: [
+      'https://12.react.pages.academy/static/hotel/17.jpg',
+      'https://12.react.pages.academy/static/hotel/15.jpg',
+      'https://12.react.pages.academy/static/hotel/12.jpg',
+      'https://12.react.pages.academy/static/hotel/7.jpg',
+      'https://12.react.pages.academy/static/hotel/16.jpg',
+      'https://12.react.pages.academy/static/hotel/9.jpg',
+    ],
     description: 'Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs.',
     goods: [
       'Laptop friendly workspace',
@@ -74,6 +90,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 3,
+    images: [
+      'https://12.react.pages.academy/static/hotel/3.jpg',
+      'https://12.react.pages.academy/static/hotel/7.jpg',
+      'https://12.react.pages.academy/static/hotel/12.jpg',
+      'https://12.react.pages.academy/static/hotel/1.jpg',
+      'https://12.react.pages.academy/static/hotel/4.jpg',
+      'https://12.react.pages.academy/static/hotel/14.jpg',
+    ],
     description: 'Relax, rejuvenate and unplug in this ultimate rustic getaway experience in the country.\nIn our beautiful screened Pondhouse, you can gaze at the stars and listen to the sounds of nature from your cozy warm bed.',
     goods: [
       'Washer',
@@ -112,6 +136,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 4,
+    images: [
+      'https://12.react.pages.academy/static/hotel/4.jpg',
+      'https://12.react.pages.academy/static/hotel/8.jpg',
+      'https://12.react.pages.academy/static/hotel/11.jpg',
+      'https://12.react.pages.academy/static/hotel/14.jpg',
+      'https://12.react.pages.academy/static/hotel/12.jpg',
+      'https://12.react.pages.academy/static/hotel/18.jpg',
+    ],
     description: 'This is a place for dreamers to reset, reflect, and create. Designed with a "slow" pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets.',
     goods: [
       'Cabel TV',

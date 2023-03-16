@@ -8,8 +8,9 @@ type Offer = {
       isPro: boolean;
       name: string;
     };
-    images: string[];
+
   */
+  images: string[];
   description: string;
   goods: string[];
   bedrooms: number;
