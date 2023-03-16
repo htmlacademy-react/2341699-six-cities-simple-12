@@ -69,10 +69,10 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
                 {offer?.type}
               </li>
               <li className="property__feature property__feature--bedrooms">
-                3 Bedrooms
+                {offer?.bedrooms} {offer?.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
               </li>
               <li className="property__feature property__feature--adults">
-                Max 4 adults
+                Max {offer?.maxAdults} {offer?.maxAdults > 1 ? 'adults' : 'adult'}
               </li>
             </ul>
             <div className="property__price">
@@ -82,36 +82,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
             <div className="property__inside">
               <h2 className="property__inside-title">What&apos;s inside</h2>
               <ul className="property__inside-list">
-                <li className="property__inside-item">
-                  Wi-Fi
-                </li>
-                <li className="property__inside-item">
-                  Washing machine
-                </li>
-                <li className="property__inside-item">
-                  Towels
-                </li>
-                <li className="property__inside-item">
-                  Heating
-                </li>
-                <li className="property__inside-item">
-                  Coffee machine
-                </li>
-                <li className="property__inside-item">
-                  Baby seat
-                </li>
-                <li className="property__inside-item">
-                  Kitchen
-                </li>
-                <li className="property__inside-item">
-                  Dishwasher
-                </li>
-                <li className="property__inside-item">
-                  Cabel TV
-                </li>
-                <li className="property__inside-item">
-                  Fridge
-                </li>
+                {offer?.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
               </ul>
             </div>
             <div className="property__host">

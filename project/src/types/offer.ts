@@ -2,11 +2,7 @@ type Offer = {
   id: number;
 
   /*
-    bedrooms: number
-    maxAdults: number;
-
     description: string;
-    goods: string[];
     host: {
       avatarUrl: string;
       id: number;
@@ -15,6 +11,10 @@ type Offer = {
     };
     images: string[];
   */
+
+  goods: string[];
+  bedrooms: number;
+  maxAdults: number;
   city: {
     location: {
       latitude: number;

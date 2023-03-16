@@ -3,7 +3,20 @@ import Offer from '../types/offer';
 export const Offers: Offer[] = [
   {
     id: 1,
-
+    goods: [
+      'Washer',
+      'Towels',
+      'Dishwasher',
+      'Fridge',
+      'Air conditioning',
+      'Coffee machine',
+      'Breakfast',
+      'Laptop friendly workspace',
+      'Baby seat',
+      'Washing machine',
+    ],
+    maxAdults: 3,
+    bedrooms: 2,
     city: {
       name: 'Amsterdam',
       location: {
@@ -27,7 +40,15 @@ export const Offers: Offer[] = [
   },
   {
     id: 2,
-
+    goods: [
+      'Laptop friendly workspace',
+      'Towels',
+      'Dishwasher',
+      'Fridge',
+      'Air conditioning',
+    ],
+    maxAdults: 1,
+    bedrooms: 1,
     city: {
       name: 'Amsterdam',
       location: {
@@ -51,7 +72,20 @@ export const Offers: Offer[] = [
   },
   {
     id: 3,
-
+    goods: [
+      'Washer',
+      'Towels',
+      'Dishwasher',
+      'Fridge',
+      'Air conditioning',
+      'Coffee machine',
+      'Breakfast',
+      'Laptop friendly workspace',
+      'Baby seat',
+      'Washing machine'
+    ],
+    maxAdults: 3,
+    bedrooms: 2,
     city: {
       name: 'Amsterdam',
       location: {
@@ -75,7 +109,21 @@ export const Offers: Offer[] = [
   },
   {
     id: 4,
-
+    goods: [
+      'Cabel TV',
+      'Laptop friendly workspace',
+      'Washer',
+      'Towels',
+      'Dishwasher',
+      'Fridge',
+      'Air conditioning',
+      'Coffee machine',
+      'Breakfast',
+      'Baby seat',
+      'Washing machine'
+    ],
+    maxAdults: 4,
+    bedrooms: 3,
     city: {
       name: 'Amsterdam',
       location: {
