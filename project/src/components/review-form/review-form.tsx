@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { AUTH_STORAGE_KEY } from '../../common/constants';
 
 function ReviewForm(): JSX.Element {
@@ -7,15 +7,43 @@ function ReviewForm(): JSX.Element {
   const showForm = userSigned && Boolean(userSigned);
 
   const [comment, setComment] = useState<string>();
-  const [, setRating] = useState<number | undefined>(undefined);
+  const [rating, setRating] = useState<number | undefined>(undefined);
+  const [submitActive, setSubmitActive] = useState(false);
+  const [formDisabled, setFormDisabled] = useState(false);
+
+  // проверка условий ТЗ - выставлен рейтинг, комментарий в промежутке от 50 до 300 символов
+  useEffect(() => {
+    setSubmitActive(comment !== undefined && rating !== undefined && comment.length >= 50 && comment.length <= 300 && rating > 0);
+  }, [comment, rating]);
 
   const handleChangeComment = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(target.value);
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // отправка формы в разработке
     e.preventDefault();
+
+    // отправка формы в разработке
+    setFormDisabled(true);
+
+    // эмулируем отправку данных
+    setTimeout(() => {
+      clearForm();
+    }, 2000);
+
+  };
+
+  const clearForm = () => {
+    if (rating) {
+      const ratingElement = document.getElementById(`${rating}-stars`);
+      if (ratingElement) {
+        (ratingElement as HTMLInputElement).checked = false;
+      }
+    }
+
+    setRating(undefined);
+    setComment('');
+    setFormDisabled(false);
   };
 
   const ratingArray = [5, 4, 3, 2, 1];
@@ -30,7 +58,15 @@ function ReviewForm(): JSX.Element {
       <div className="reviews__rating-form form__rating">
         {ratingArray.map((r) => (
           <Fragment key={r}>
-            <input className="form__rating-input visually-hidden" name="rating" value={r} id={`${r}-stars`} type="radio" onChange={() => setRating(r)} />
+            <input
+              className="form__rating-input visually-hidden"
+              name="rating"
+              value={r}
+              id={`${r}-stars`}
+              type="radio"
+              onChange={() => setRating(r)}
+              disabled={formDisabled}
+            />
             <label htmlFor={`${r}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width="37" height="33">
                 <use xlinkHref="#icon-star"></use>
@@ -38,13 +74,21 @@ function ReviewForm(): JSX.Element {
             </label>
           </Fragment>))}
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" value={comment} onChange={handleChangeComment}>
+      <textarea
+        className="reviews__textarea form__textarea"
+        id="review"
+        name="review"
+        placeholder="Tell how was your stay, what you like and what can be improved"
+        value={comment}
+        onChange={handleChangeComment}
+        disabled={formDisabled}
+      >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit">Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!submitActive || formDisabled}>Submit</button>
       </div>
     </form>
   );

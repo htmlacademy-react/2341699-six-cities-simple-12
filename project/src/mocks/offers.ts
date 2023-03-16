@@ -10,6 +10,10 @@ export const Offers: Offer[] = [
       'https://12.react.pages.academy/static/hotel/16.jpg',
       'https://12.react.pages.academy/static/hotel/10.jpg',
       'https://12.react.pages.academy/static/hotel/15.jpg',
+      'https://12.react.pages.academy/static/hotel/17.jpg',
+      'https://12.react.pages.academy/static/hotel/12.jpg',
+      'https://12.react.pages.academy/static/hotel/7.jpg',
+      'https://12.react.pages.academy/static/hotel/9.jpg',
     ],
     description: 'I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station.\nThe apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath.\n A terrace can be used in summer.',
     goods: [

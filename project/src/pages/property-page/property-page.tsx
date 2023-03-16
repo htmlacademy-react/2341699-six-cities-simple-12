@@ -2,12 +2,31 @@ import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import Offer from '../../types/offer';
+import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
 import { GetRatingPercent } from '../../common/utils';
+import Map from '../../components/map/map';
 
 type PropertyPageProps = {
   offers: Offer[];
 };
+
+function GetRandomImages(images: string[]): string[] {
+  const rawImages = images.map((e) => e);
+  const resultImages: string[] = [];
+
+  const getRandomIndex = (max: number) => Math.round(Math.random() * max);
+
+  for (let i = 0; i <= 5; i++) {
+
+    const imageIndex = getRandomIndex(rawImages.length - 1);
+
+    resultImages.push(rawImages[imageIndex]);
+    rawImages.splice(imageIndex, 1);
+  }
+
+  return resultImages;
+}
 
 function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
   const { id } = useParams();
@@ -18,16 +37,21 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
     return (<Navigate to="/404" />);
   }
 
+  const currentCity = offer.city;
   const ratingPercent = GetRatingPercent(offer.rating);
 
   const descriptionItems = offer.description.split('\n');
+
+  const points: Point[] = [];
+
+  const randomImages = GetRandomImages(offer.images);
 
   return (
     <Fragment>
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
-            {offer.images.map((imageUrl) => (
+            {randomImages.map((imageUrl) => (
               <div key={imageUrl} className="property__image-wrapper">
                 <img className="property__image" src={imageUrl} alt={offer.type} />
               </div>
@@ -96,7 +120,11 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
 
           </div>
         </div>
-        <section className="property__map map"></section>
+
+        {/* <section className="property__map map"></section> */}
+
+        <Map containerClassNames='property__map map' city={currentCity} points={points} />
+
       </section>
       <div className="container">
         <section className="near-places places">

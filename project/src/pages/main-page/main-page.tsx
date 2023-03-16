@@ -69,7 +69,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
           {!offersEmpty && <OfferList offers={currentOffers} city={currentCity} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => setSortType(e)} />}
 
           <div className="cities__right-section">
-            {!offersEmpty && <Map city={currentCity} points={points} selectedPoint={selectedPoint} />}
+            {!offersEmpty && <Map containerClassNames='cities__map map' city={currentCity} points={points} selectedPoint={selectedPoint} />}
           </div>
 
         </div>

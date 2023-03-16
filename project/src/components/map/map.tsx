@@ -7,9 +7,10 @@ import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
+  containerClassNames: string | undefined;
   city: City;
   points: Points;
-  selectedPoint: Point | undefined;
+  selectedPoint?: Point | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -24,7 +25,7 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
+function Map({ containerClassNames, city, points, selectedPoint }: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -39,7 +40,7 @@ function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
 
         marker
           .setIcon(
-            selectedPoint !== undefined && point.longitude === selectedPoint.longitude && point.latitude === selectedPoint.latitude
+            selectedPoint && point.longitude === selectedPoint.longitude && point.latitude === selectedPoint.latitude
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -49,9 +50,7 @@ function Map({ city, points, selectedPoint }: MapProps): JSX.Element {
   }, [map, points, selectedPoint]);
 
   return (
-    <section className="cities__map map" ref={mapRef}>
-
-    </section>
+    <section className={containerClassNames} ref={mapRef} />
   );
 }
 

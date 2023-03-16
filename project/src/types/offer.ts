@@ -1,3 +1,5 @@
+import City from './city';
+
 type Offer = {
   id: number;
 
@@ -15,14 +17,7 @@ type Offer = {
   goods: string[];
   bedrooms: number;
   maxAdults: number;
-  city: {
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-    name: string;
-  };
+  city: City;
   isPremium: boolean;
   previewImage: string;
   price: number;
