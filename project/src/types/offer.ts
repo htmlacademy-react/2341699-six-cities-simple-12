@@ -2,7 +2,6 @@ type Offer = {
   id: number;
 
   /*
-    description: string;
     host: {
       avatarUrl: string;
       id: number;
@@ -11,7 +10,7 @@ type Offer = {
     };
     images: string[];
   */
-
+  description: string;
   goods: string[];
   bedrooms: number;
   maxAdults: number;

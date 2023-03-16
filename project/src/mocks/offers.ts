@@ -3,6 +3,7 @@ import Offer from '../types/offer';
 export const Offers: Offer[] = [
   {
     id: 1,
+    description: 'I rent out a very sunny and bright apartment only 7 minutes walking distance to the metro station.\nThe apartment has a spacious living room with a kitchen, one bedroom and a bathroom with mit bath.\n A terrace can be used in summer.',
     goods: [
       'Washer',
       'Towels',
@@ -40,6 +41,7 @@ export const Offers: Offer[] = [
   },
   {
     id: 2,
+    description: 'Discover daily local life in city center, friendly neighborhood, clandestine casino, karaoke, old-style artisans, art gallery and artist studio downstairs.',
     goods: [
       'Laptop friendly workspace',
       'Towels',
@@ -72,6 +74,7 @@ export const Offers: Offer[] = [
   },
   {
     id: 3,
+    description: 'Relax, rejuvenate and unplug in this ultimate rustic getaway experience in the country.\nIn our beautiful screened Pondhouse, you can gaze at the stars and listen to the sounds of nature from your cozy warm bed.',
     goods: [
       'Washer',
       'Towels',
@@ -109,6 +112,7 @@ export const Offers: Offer[] = [
   },
   {
     id: 4,
+    description: 'This is a place for dreamers to reset, reflect, and create. Designed with a "slow" pace in mind, our hope is that you enjoy every part of your stay; from making local coffee by drip in the morning, choosing the perfect record to put on as the sun sets.',
     goods: [
       'Cabel TV',
       'Laptop friendly workspace',
