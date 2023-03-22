@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { SORT_MENU_ITEMS } from '../../common/constants';
+import { SortMenuItems, SORT_MENU_ITEMS } from '../../common/constants';
 
 type OffersSortingMenuProps = {
-  changeSortType: (sortType: string) => void;
+  changeSortType?: (sortType: number) => void;
 };
 
 function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Element {
 
   const sortMenuButtonRef = useRef(null);
   const [menuShow, setMenuShow] = useState(false);
-  const [activeItem, setActiveItem] = useState('Popular');
+  const [activeItem, setActiveItem] = useState(SortMenuItems.Popular);
 
   useEffect(() => {
     if (!sortMenuButtonRef) {
@@ -26,16 +26,19 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     return () => document.body.removeEventListener('click', closeMenu);
   }, [menuShow]);
 
-  const handleChangeActiveItem = (newActiveItem: string) => {
+  const handleChangeActiveItem = (newActiveItem: number) => {
     setActiveItem(newActiveItem);
-    changeSortType(newActiveItem);
+
+    if (changeSortType) {
+      changeSortType(newActiveItem);
+    }
   };
 
-  const menuItems = SORT_MENU_ITEMS.map((item, i) => (
+  const menuItems = SORT_MENU_ITEMS().map((item, i) => (
     <li
       key={`places__option_${i.toString()}`}
-      className={`places__option ${item === activeItem ? 'places__option--active' : ''}`}
-      tabIndex={0} onClick={() => handleChangeActiveItem(item)}
+      className={`places__option ${i === activeItem ? 'places__option--active' : ''}`}
+      tabIndex={0} onClick={() => handleChangeActiveItem(i)}
     >
       {item}
     </li>));
@@ -44,7 +47,7 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     <form className="places__sorting" action="#" method="get" >
       <span className="places__sorting-caption">Sort by &nbsp;</span>
       <span className="places__sorting-type" tabIndex={0} onClick={() => setMenuShow(!menuShow)} ref={sortMenuButtonRef}>
-        {activeItem}
+        {SortMenuItems[activeItem]}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>

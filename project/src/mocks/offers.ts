@@ -42,7 +42,7 @@ export const Offers: Offer[] = [
     isPremium: true,
     previewImage: 'img/apartment-01.jpg',
     price: 120,
-    rating: 4.8,
+    rating: 4,
     title: 'Beautiful & luxurious apartment at great location',
     type: 'Apartment',
     location: {
@@ -83,7 +83,7 @@ export const Offers: Offer[] = [
     isPremium: false,
     previewImage: 'img/room.jpg',
     price: 80,
-    rating: 4.8,
+    rating: 4.5,
     title: 'Wood and stone place',
     type: 'Private room',
     location: {
@@ -129,7 +129,7 @@ export const Offers: Offer[] = [
     isPremium: false,
     previewImage: 'img/apartment-02.jpg',
     price: 132,
-    rating: 4.8,
+    rating: 3,
     title: 'Canal View Prinsengracht',
     type: 'Apartment',
     location: {

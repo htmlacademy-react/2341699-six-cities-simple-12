@@ -1,43 +1,59 @@
+import { Fragment } from 'react';
+import { SortMenuItems } from '../../common/constants';
 import Offer from '../../types/offer';
-import City from '../../types/city';
 import { Point } from '../../types/point';
 import OffersSortingMenu from '../offers-sorting-menu/offers-sorting-menu';
 import OfferCard from '../offer-card/offer-card';
 
 type OfferListProps = {
   offers: Offer[];
-  city: City;
-  changeSelectedPoint: (point: Point | undefined) => void;
-  changeSortType: (sortType: string) => void;
+  cityName?: string;
+  isNearPlace?: boolean;
+  changeSelectedPoint?: (point: Point | undefined) => void;
+  changeSortType?: (sortType: SortMenuItems) => void;
 };
 
-function OfferList({ offers, city, changeSelectedPoint, changeSortType }: OfferListProps): JSX.Element {
+function OfferList(props: OfferListProps): JSX.Element {
+
+  const { offers, cityName, isNearPlace } = props;
+  const { changeSelectedPoint, changeSortType } = props;
 
   const changeSelectedOffer = (item: Offer | undefined) => {
-    if (!item) {
+    if (!item && changeSelectedPoint) {
       changeSelectedPoint(undefined);
       return;
     }
 
-    changeSelectedPoint({
-      latitude: item.location.latitude,
-      longitude: item.location.longitude
-    });
+    if (item && changeSelectedPoint) {
+      changeSelectedPoint({
+        latitude: item.location.latitude,
+        longitude: item.location.longitude
+      });
+    }
   };
 
   const offerCards = offers.map((item) => {
     const keyValue = `offer-${item.id}`;
-    return <OfferCard key={keyValue} item={item} setFocusedItem={(e) => changeSelectedOffer(e)} />;
+    return <OfferCard key={keyValue} item={item} setActiveItem={(e) => changeSelectedOffer(e)} />;
   });
 
+  const mainClass = isNearPlace ? 'near-places' : 'cities__places';
+  const listClass = isNearPlace ? 'near-places__list' : 'cities__places-list';
+
   return (
-    <section className="cities__places places">
-      <h2 className="visually-hidden">Places</h2>
-      <b className="places__found">{offers.length} places to stay in {city.name}</b>
+    <section className={`${mainClass} places`}>
 
-      <OffersSortingMenu changeSortType={changeSortType} />
+      {!isNearPlace && (
+        <Fragment>
+          <h2 className="visually-hidden">Places</h2>
+          <b className="places__found">{offers.length} places to stay in {cityName}</b>
+          <OffersSortingMenu changeSortType={changeSortType} />
+        </Fragment>
+      )}
 
-      <div className="cities__places-list places__list tabs__content">
+      {isNearPlace && <h2 className="near-places__title">Other places in the neighbourhood</h2>}
+
+      <div className={`${listClass} places__list ${(isNearPlace ? '' : 'tabs__content')}`}>
         {offerCards}
       </div>
     </section>

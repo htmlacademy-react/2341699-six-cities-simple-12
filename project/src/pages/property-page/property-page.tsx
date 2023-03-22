@@ -4,31 +4,16 @@ import { useParams } from 'react-router';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
-import { GetRatingPercent } from '../../common/utils';
+import { GetRandomArrayLines, GetRatingPercent } from '../../common/utils';
 import Map from '../../components/map/map';
+import OfferList from '../../components/offer-list/offer-list';
 
 type PropertyPageProps = {
   offers: Offer[];
 };
 
-function GetRandomImages(images: string[]): string[] {
-  const rawImages = images.map((e) => e);
-  const resultImages: string[] = [];
-
-  const getRandomIndex = (max: number) => Math.round(Math.random() * max);
-
-  for (let i = 0; i <= 5; i++) {
-
-    const imageIndex = getRandomIndex(rawImages.length - 1);
-
-    resultImages.push(rawImages[imageIndex]);
-    rawImages.splice(imageIndex, 1);
-  }
-
-  return resultImages;
-}
-
 function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
+
   const { id } = useParams();
   const offer = offers.find((e) => e.id === Number(id));
 
@@ -42,9 +27,12 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
 
   const descriptionItems = offer.description.split('\n');
 
-  const points: Point[] = [];
+  const randomImages = GetRandomArrayLines(offer.images, offer.images.length > 6 ? 6 : offer.images.length);
 
-  const randomImages = GetRandomImages(offer.images);
+  const offersNearby = offers.slice(0, offers.length > 3 ? 3 : offers.length);
+
+  const pointsNearby: Point[] = offersNearby.map((e) => e.location);
+  pointsNearby.push(offer.location);
 
   return (
     <Fragment>
@@ -121,98 +109,16 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
           </div>
         </div>
 
-        {/* <section className="property__map map"></section> */}
-
-        <Map containerClassNames='property__map map' city={currentCity} points={points} />
+        <Map containerClassNames='property__map map' city={currentCity} points={pointsNearby} selectedPoint={offer.location} />
 
       </section>
+
       <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/room.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;80</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '80%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Wood and stone place</a>
-                </h2>
-                <p className="place-card__type">Private room</p>
-              </div>
-            </article>
 
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/apartment-02.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;132</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '80%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Canal View Prinsengracht</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
+        <OfferList offers={offersNearby} isNearPlace />
 
-            <article className="near-places__card place-card">
-              <div className="place-card__mark">
-                <span>Premium</span>
-              </div>
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/apartment-03.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;180</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '100%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Nice, cozy, warm big bed apartment</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
-          </div>
-        </section>
       </div>
+
     </Fragment>
   );
 }

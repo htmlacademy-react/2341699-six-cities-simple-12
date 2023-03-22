@@ -20,18 +20,25 @@ type EmptySectionProps = {
   cityName: string;
 };
 
+
 function MainPage({ offers }: MainProps): JSX.Element {
 
   const getCityOffers = (cityName: string) => offers.filter((e) => e.city.name === cityName);
 
-  const [currentCity, setCurrentCity] = useState(Cities[3]);
+  // потом поменять на 0 (Paris)
+  const defaultCityIndex = 3;
+
+  const [currentCity, setCurrentCity] = useState(Cities[defaultCityIndex]);
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
-  const [currentOffers, setCurrentOffers] = useState<Offer[]>(getCityOffers(Cities[3].name));
-  const [, setSortType] = useState('Popular');
+  const [currentOffers, setCurrentOffers] = useState<Offer[]>(getCityOffers(Cities[defaultCityIndex].name));
 
   const handleChangeCurrentCity = (city: City) => {
     setCurrentCity(city);
     setCurrentOffers(getCityOffers(city.name));
+  };
+
+  const handleChangeSortType = (e: number) => {
+    setCurrentOffers(SortOffers(offers, e));
   };
 
   const points = offers.map((offer): Point => ({
@@ -39,12 +46,10 @@ function MainPage({ offers }: MainProps): JSX.Element {
     longitude: offer.location.longitude
   }));
 
-  const mainClass = currentOffers.length === 0 ? 'page__main--index-empty' : '';
-
   const offersEmpty = currentOffers.length < 1;
 
   return (
-    <div className={`page__main page__main--index ${mainClass}`}>
+    <div className={`page__main page__main--index ${offersEmpty ? 'page__main--index-empty' : ''}`}>
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
@@ -66,7 +71,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
 
           {offersEmpty && <EmptySection cityName={currentCity.name} />}
 
-          {!offersEmpty && <OfferList offers={currentOffers} city={currentCity} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => setSortType(e)} />}
+          {!offersEmpty && <OfferList offers={currentOffers} cityName={currentCity.name} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => handleChangeSortType(e)} />}
 
           <div className="cities__right-section">
             {!offersEmpty && <Map containerClassNames='cities__map map' city={currentCity} points={points} selectedPoint={selectedPoint} />}
@@ -77,7 +82,6 @@ function MainPage({ offers }: MainProps): JSX.Element {
     </div>
   );
 }
-
 
 function LocationTabItem({ city, isActive, changeCurrentLocation }: LocationTabItemProps): JSX.Element {
 
@@ -102,6 +106,28 @@ function EmptySection({ cityName }: EmptySectionProps): JSX.Element {
       </div>
     </section>
   );
+}
+
+function SortOffers(rawItems: Offer[], sortType: number): Offer[] {
+
+  const items = rawItems.map((e) => e);
+
+  switch (sortType) {
+    // Price: low to high
+    case 1:
+      items.sort((a, b) => a.price - b.price);
+      break;
+    // Price: high to low
+    case 2:
+      items.sort((a, b) => b.price - a.price);
+      break;
+    // Top rated first
+    case 3:
+      items.sort((a, b) => b.rating - a.rating);
+      break;
+  }
+
+  return sortType > 0 ? items : rawItems;
 }
 
 export default MainPage;
