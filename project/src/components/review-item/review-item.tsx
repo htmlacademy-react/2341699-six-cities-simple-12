@@ -1,4 +1,5 @@
-import Review from '../../types/Review';
+import { GetRatingPercent } from '../../common/utils';
+import Review from '../../types/review';
 
 type ReviewItemProps = {
   item: Review;
@@ -6,11 +7,14 @@ type ReviewItemProps = {
 
 function ReviewItem({ item }: ReviewItemProps): JSX.Element {
 
-  const ratingPercent = `${item.rating / 0.05}%`;
+  const ratingPercent = GetRatingPercent(item.rating);
 
   const itemDate = new Date(item.date);
 
   const monthName = itemDate.toLocaleString('en-EN', { month: 'long' });
+
+  const rawDatetime = item.date.substring(0, 10);
+  const reviewTime = `${monthName} ${itemDate.getFullYear()}`;
 
   return (
     <li className="reviews__item">
@@ -32,7 +36,7 @@ function ReviewItem({ item }: ReviewItemProps): JSX.Element {
         <p className="reviews__text">
           {item.comment}
         </p>
-        <time className="reviews__time" dateTime={item.date.substring(0, 10)}>{monthName} {itemDate.getFullYear()}</time>
+        <time className="reviews__time" dateTime={rawDatetime}>{reviewTime}</time>
       </div>
     </li>
   );

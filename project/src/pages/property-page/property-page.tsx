@@ -1,8 +1,9 @@
 import { Fragment } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import Offer from '../../types/Offer';
+import Offer from '../../types/offer';
 import ReviewList from '../../components/review-list/review-list';
+import { GetRatingPercent } from '../../common/utils';
 
 type PropertyPageProps = {
   offers: Offer[];
@@ -17,41 +18,30 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
     return (<Navigate to="/404" />);
   }
 
-  const ratingPercent = `${offer.rating / 0.05}%`;
+  const ratingPercent = GetRatingPercent(offer.rating);
+
+  const descriptionItems = offer.description.split('\n');
 
   return (
     <Fragment>
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/room.jpg" alt="Photо studio" />
-            </div>
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/apartment-01.jpg" alt="Photо studio" />
-            </div>
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/apartment-02.jpg" alt="Photо studio" />
-            </div>
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/apartment-03.jpg" alt="Photо studio" />
-            </div>
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/studio-01.jpg" alt="Photо studio" />
-            </div>
-            <div className="property__image-wrapper">
-              <img className="property__image" src="img/apartment-01.jpg" alt="Photо studio" />
-            </div>
+            {offer.images.map((imageUrl) => (
+              <div key={imageUrl} className="property__image-wrapper">
+                <img className="property__image" src={imageUrl} alt={offer.type} />
+              </div>
+            ))}
           </div>
         </div>
         <div className="property__container container">
           <div className="property__wrapper">
 
-            {offer?.isPremium && <div className="property__mark"><span>Premium</span></div>}
+            {offer.isPremium && <div className="property__mark"><span>Premium</span></div>}
 
             <div className="property__name-wrapper">
               <h1 className="property__name">
-                {offer?.title}
+                {offer.title}
               </h1>
             </div>
 
@@ -65,52 +55,23 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
 
             <ul className="property__features">
               <li className="property__feature property__feature--entire">
-                {offer?.type}
+                {offer.type}
               </li>
               <li className="property__feature property__feature--bedrooms">
-                3 Bedrooms
+                {offer.bedrooms} {offer?.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
               </li>
               <li className="property__feature property__feature--adults">
-                Max 4 adults
+                Max {offer.maxAdults} {offer.maxAdults > 1 ? 'adults' : 'adult'}
               </li>
             </ul>
             <div className="property__price">
-              <b className="property__price-value">&euro;120</b>
+              <b className="property__price-value">&euro;{offer.price}</b>
               <span className="property__price-text">&nbsp;night</span>
             </div>
             <div className="property__inside">
               <h2 className="property__inside-title">What&apos;s inside</h2>
               <ul className="property__inside-list">
-                <li className="property__inside-item">
-                  Wi-Fi
-                </li>
-                <li className="property__inside-item">
-                  Washing machine
-                </li>
-                <li className="property__inside-item">
-                  Towels
-                </li>
-                <li className="property__inside-item">
-                  Heating
-                </li>
-                <li className="property__inside-item">
-                  Coffee machine
-                </li>
-                <li className="property__inside-item">
-                  Baby seat
-                </li>
-                <li className="property__inside-item">
-                  Kitchen
-                </li>
-                <li className="property__inside-item">
-                  Dishwasher
-                </li>
-                <li className="property__inside-item">
-                  Cabel TV
-                </li>
-                <li className="property__inside-item">
-                  Fridge
-                </li>
+                {offer?.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
               </ul>
             </div>
             <div className="property__host">
@@ -127,12 +88,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
                 </span>
               </div>
               <div className="property__description">
-                <p className="property__text">
-                  A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                </p>
-                <p className="property__text">
-                  An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
-                </p>
+                {descriptionItems.map((text) => <p key={text} className="property__text">{text}</p>)}
               </div>
             </div>
 

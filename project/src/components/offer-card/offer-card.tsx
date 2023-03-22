@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import Offer from '../../types/Offer';
+import { GetRatingPercent } from '../../common/utils';
+import Offer from '../../types/offer';
 
 type PlaceCardProps = {
   item: Offer;
@@ -8,8 +9,9 @@ type PlaceCardProps = {
 
 function OfferCard({ item, setFocusedItem }: PlaceCardProps): JSX.Element {
 
-  const ratingPercent = `${item.rating / 0.05}%`;
-  const offerUrl = `/offer/${item.id}`;
+  const ratingPercent = GetRatingPercent(item.rating);
+
+  const offerUrl = `/offer/${item.id.toString()}`;
 
   return (
     <article className="cities__card place-card">

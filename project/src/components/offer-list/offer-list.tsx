@@ -1,63 +1,46 @@
-import { useState } from 'react';
-import Offer from '../../types/Offer';
+import Offer from '../../types/offer';
+import City from '../../types/city';
+import { Point } from '../../types/point';
+import OffersSortingMenu from '../offers-sorting-menu/offers-sorting-menu';
 import OfferCard from '../offer-card/offer-card';
 
 type OfferListProps = {
-  placesFound: number;
   offers: Offer[];
-  locationName: string;
+  city: City;
+  changeSelectedPoint: (point: Point | undefined) => void;
+  changeSortType: (sortType: string) => void;
 };
 
-function OfferList({ placesFound, offers, locationName }: OfferListProps): JSX.Element {
+function OfferList({ offers, city, changeSelectedPoint, changeSortType }: OfferListProps): JSX.Element {
 
-  const [focusedItem, setFocusedItem] = useState<Offer>();
+  const changeSelectedOffer = (item: Offer | undefined) => {
+    if (!item) {
+      changeSelectedPoint(undefined);
+      return;
+    }
+
+    changeSelectedPoint({
+      latitude: item.location.latitude,
+      longitude: item.location.longitude
+    });
+  };
 
   const offerCards = offers.map((item) => {
     const keyValue = `offer-${item.id}`;
-    return <OfferCard key={keyValue} item={item} setFocusedItem={(e) => setFocusedItem(e)} />;
+    return <OfferCard key={keyValue} item={item} setFocusedItem={(e) => changeSelectedOffer(e)} />;
   });
 
   return (
-    <div className="cities__places-container container">
-      <section className="cities__places places">
-        <h2 className="visually-hidden">Places</h2>
-        <b className="places__found">{placesFound} places to stay in {locationName}</b>
-        <form className="places__sorting" action="#" method="get">
-          <span className="places__sorting-caption">Sort by &nbsp;</span>
-          <span className="places__sorting-type" tabIndex={0}>
-            Popular
-            <svg className="places__sorting-arrow" width="7" height="4">
-              <use xlinkHref="#icon-arrow-select"></use>
-            </svg>
-          </span>
-          <ul className="places__options places__options--custom places__options--opened">
-            <li
-              className="places__option places__option--active"
-              tabIndex={0}
-            >
-              Popular
-            </li>
-            <li className="places__option" tabIndex={0}>
-              Price: low to high
-            </li>
-            <li className="places__option" tabIndex={0}>
-              Price: high to low
-            </li>
-            <li className="places__option" tabIndex={0}>
-              Top rated first
-            </li>
-          </ul>
-        </form>
-        <div className="cities__places-list places__list tabs__content">
-          {offerCards}
-        </div>
-      </section>
-      <div className="cities__right-section">
-        <section className="cities__map map">
-          {focusedItem?.id}
-        </section>
+    <section className="cities__places places">
+      <h2 className="visually-hidden">Places</h2>
+      <b className="places__found">{offers.length} places to stay in {city.name}</b>
+
+      <OffersSortingMenu changeSortType={changeSortType} />
+
+      <div className="cities__places-list places__list tabs__content">
+        {offerCards}
       </div>
-    </div>
+    </section>
   );
 }
 

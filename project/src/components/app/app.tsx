@@ -1,31 +1,45 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppRoute } from '../../common/constants';
+import { AppRoute, AUTH_STORAGE_KEY } from '../../common/constants';
 import Layout from '../layout';
 import Main from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/nof-found-page';
-import Offer from '../../types/Offer';
+import Offer from '../../types/offer';
 import { useState } from 'react';
 
 type AppProps = {
-  placesFound: number;
   offers: Offer[];
 };
 
-function App({ placesFound, offers }: AppProps): JSX.Element {
+function App({ offers }: AppProps): JSX.Element {
+
+  const userSigned = localStorage.getItem(AUTH_STORAGE_KEY);
 
   const [authData, setAuthData] = useState(false);
 
   const handleChangeAuth = (isAuthorised: boolean) => {
+
     setAuthData(isAuthorised);
+
+    // сохраняем состояние
+    if (!isAuthorised) {
+      localStorage.removeItem(AUTH_STORAGE_KEY);
+    }
+    else {
+      localStorage.setItem(AUTH_STORAGE_KEY, String(isAuthorised));
+    }
   };
+
+  if (!authData && userSigned && Boolean(userSigned)) {
+    setAuthData(true);
+  }
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
-          <Route index element={<Main placesFound={placesFound} offers={offers} />} />
+          <Route index element={<Main offers={offers} />} />
           <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
 
           <Route path={`${AppRoute.Offer}/:id`} element={<PropertyPage offers={offers} />} />
