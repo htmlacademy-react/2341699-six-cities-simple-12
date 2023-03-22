@@ -3,15 +3,13 @@ import City from './city';
 type Offer = {
   id: number;
 
-  /*
-    host: {
-      avatarUrl: string;
-      id: number;
-      isPro: boolean;
-      name: string;
-    };
+  host: {
+    avatarUrl: string;
+    id: number;
+    isPro: boolean;
+    name: string;
+  };
 
-  */
   images: string[];
   description: string;
   goods: string[];

@@ -4,9 +4,10 @@ import { useParams } from 'react-router';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
-import { GetRandomArrayLines, GetRatingPercent } from '../../common/utils';
+import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
+import { MAX_OFFERS_NEARBY } from '../../common/constants';
 
 type PropertyPageProps = {
   offers: Offer[];
@@ -23,16 +24,23 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
   }
 
   const currentCity = offer.city;
+
   const ratingPercent = GetRatingPercent(offer.rating);
 
+  // разбиваем описание на параграфы
   const descriptionItems = offer.description.split('\n');
 
-  const randomImages = GetRandomArrayLines(offer.images, offer.images.length > 6 ? 6 : offer.images.length);
+  const randomImages = GetRandomArrayItems<string>(offer.images, offer.images.length > 6 ? 6 : offer.images.length);
 
-  const offersNearby = offers.slice(0, offers.length > 3 ? 3 : offers.length);
+  //#region Формируем данные предложений поблизости
+
+  //TODO: заменить offers на реальные данные
+  const offersNearby = GetRandomArrayItems<Offer>(offers, offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
 
   const pointsNearby: Point[] = offersNearby.map((e) => e.location);
   pointsNearby.push(offer.location);
+
+  //#endregion
 
   return (
     <Fragment>
@@ -83,21 +91,21 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
             <div className="property__inside">
               <h2 className="property__inside-title">What&apos;s inside</h2>
               <ul className="property__inside-list">
-                {offer?.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
+                {offer.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
               </ul>
             </div>
             <div className="property__host">
               <h2 className="property__host-title">Meet the host</h2>
               <div className="property__host-user user">
                 <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                  <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="property__user-name">
-                  Angelina
+                  {offer.host.name}
                 </span>
-                <span className="property__user-status">
-                  Pro
-                </span>
+
+                {offer.host.isPro && <span className="property__user-status">Pro</span>}
+
               </div>
               <div className="property__description">
                 {descriptionItems.map((text) => <p key={text} className="property__text">{text}</p>)}
@@ -115,7 +123,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
 
       <div className="container">
 
-        <OfferList offers={offersNearby} isNearPlace />
+        <OfferList offers={offersNearby} isNearPlaces />
 
       </div>
 

@@ -8,14 +8,14 @@ import OfferCard from '../offer-card/offer-card';
 type OfferListProps = {
   offers: Offer[];
   cityName?: string;
-  isNearPlace?: boolean;
+  isNearPlaces?: boolean;
   changeSelectedPoint?: (point: Point | undefined) => void;
   changeSortType?: (sortType: SortMenuItems) => void;
 };
 
 function OfferList(props: OfferListProps): JSX.Element {
 
-  const { offers, cityName, isNearPlace } = props;
+  const { offers, cityName, isNearPlaces } = props;
   const { changeSelectedPoint, changeSortType } = props;
 
   const changeSelectedOffer = (item: Offer | undefined) => {
@@ -37,13 +37,13 @@ function OfferList(props: OfferListProps): JSX.Element {
     return <OfferCard key={keyValue} item={item} setActiveItem={(e) => changeSelectedOffer(e)} />;
   });
 
-  const mainClass = isNearPlace ? 'near-places' : 'cities__places';
-  const listClass = isNearPlace ? 'near-places__list' : 'cities__places-list';
+  const mainClass = isNearPlaces ? 'near-places' : 'cities__places';
+  const listClass = isNearPlaces ? 'near-places__list' : 'cities__places-list';
 
   return (
     <section className={`${mainClass} places`}>
 
-      {!isNearPlace && (
+      {!isNearPlaces && (
         <Fragment>
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offers.length} places to stay in {cityName}</b>
@@ -51,9 +51,9 @@ function OfferList(props: OfferListProps): JSX.Element {
         </Fragment>
       )}
 
-      {isNearPlace && <h2 className="near-places__title">Other places in the neighbourhood</h2>}
+      {isNearPlaces && <h2 className="near-places__title">Other places in the neighbourhood</h2>}
 
-      <div className={`${listClass} places__list ${(isNearPlace ? '' : 'tabs__content')}`}>
+      <div className={`${listClass} places__list ${(isNearPlaces ? '' : 'tabs__content')}`}>
         {offerCards}
       </div>
     </section>

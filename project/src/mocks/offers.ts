@@ -3,6 +3,14 @@ import Offer from '../types/offer';
 export const Offers: Offer[] = [
   {
     id: 1,
+
+    host: {
+      avatarUrl: 'https://i.pravatar.cc/74?u=ahmed@pravatar.com',
+      id: 2,
+      isPro: false,
+      name: 'Ahmed'
+    },
+
     images: [
       'https://12.react.pages.academy/static/hotel/14.jpg',
       'https://12.react.pages.academy/static/hotel/8.jpg',
@@ -53,6 +61,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 2,
+
+    host: {
+      avatarUrl: 'img/avatar-angelina.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
+
     images: [
       'https://12.react.pages.academy/static/hotel/17.jpg',
       'https://12.react.pages.academy/static/hotel/15.jpg',
@@ -94,6 +110,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 3,
+
+    host: {
+      avatarUrl: 'img/avatar-angelina.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
+
     images: [
       'https://12.react.pages.academy/static/hotel/3.jpg',
       'https://12.react.pages.academy/static/hotel/7.jpg',
@@ -140,6 +164,14 @@ export const Offers: Offer[] = [
   },
   {
     id: 4,
+
+    host: {
+      avatarUrl: 'img/avatar-angelina.jpg',
+      id: 3,
+      isPro: true,
+      name: 'Angelina'
+    },
+
     images: [
       'https://12.react.pages.academy/static/hotel/4.jpg',
       'https://12.react.pages.academy/static/hotel/8.jpg',
