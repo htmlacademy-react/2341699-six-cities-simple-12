@@ -54,8 +54,8 @@ export const Offers: Offer[] = [
     title: 'Beautiful & luxurious apartment at great location',
     type: 'Apartment',
     location: {
-      latitude: 52.3209553943508,
-      longitude: 4.81309666406198,
+      longitude: 2.41229,
+      latitude: 48.84311,
       zoom: 8
     },
   },
