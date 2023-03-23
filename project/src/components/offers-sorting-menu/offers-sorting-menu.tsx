@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { SortMenuItems, SORT_MENU_ITEMS } from '../../common/constants';
+import { SortMenuItems } from '../../common/constants';
 
 type OffersSortingMenuProps = {
-  changeSortType?: (sortType: number) => void;
+  changeSortType?: (sortType: SortMenuItems) => void;
 };
 
 function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Element {
 
   const sortMenuButtonRef = useRef(null);
   const [menuShow, setMenuShow] = useState(false);
-  const [activeItem, setActiveItem] = useState(SortMenuItems.Popular);
+  const [activeItem, setActiveItem] = useState(SortMenuItems.Default);
 
   useEffect(() => {
     if (!sortMenuButtonRef) {
@@ -26,7 +26,7 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     return () => document.body.removeEventListener('click', closeMenu);
   }, [menuShow]);
 
-  const handleChangeActiveItem = (newActiveItem: number) => {
+  const handleChangeActiveItem = (newActiveItem: SortMenuItems) => {
     setActiveItem(newActiveItem);
 
     if (changeSortType) {
@@ -34,11 +34,12 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     }
   };
 
-  const menuItems = SORT_MENU_ITEMS().map((item, i) => (
+  const menuItems = Object.values(SortMenuItems).map((item, i) => (
     <li
-      key={`places__option_${i.toString()}`}
-      className={`places__option ${i === activeItem ? 'places__option--active' : ''}`}
-      tabIndex={0} onClick={() => handleChangeActiveItem(i)}
+      key={`places__option_${String(i)}`}
+      className={`places__option ${item === activeItem ? 'places__option--active' : ''}`}
+      tabIndex={0}
+      onClick={() => handleChangeActiveItem(item)}
     >
       {item}
     </li>));
@@ -47,7 +48,7 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     <form className="places__sorting" action="#" method="get" >
       <span className="places__sorting-caption">Sort by &nbsp;</span>
       <span className="places__sorting-type" tabIndex={0} onClick={() => setMenuShow(!menuShow)} ref={sortMenuButtonRef}>
-        {SortMenuItems[activeItem]}
+        {activeItem}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>

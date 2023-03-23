@@ -5,6 +5,7 @@ import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
+import { SortMenuItems } from '../../common/constants';
 
 type MainProps = {
   offers: Offer[];
@@ -37,7 +38,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
     setCurrentOffers(getCityOffers(city.name));
   };
 
-  const handleChangeSortType = (e: number) => {
+  const handleChangeSortType = (e: SortMenuItems) => {
     setCurrentOffers(SortOffers(offers, e));
   };
 
@@ -108,26 +109,23 @@ function EmptySection({ cityName }: EmptySectionProps): JSX.Element {
   );
 }
 
-function SortOffers(rawItems: Offer[], sortType: number): Offer[] {
+function SortOffers(rawItems: Offer[], sortType: SortMenuItems): Offer[] {
 
   const items = rawItems.map((e) => e);
 
   switch (sortType) {
-    // Price: low to high
-    case 1:
+    case SortMenuItems.PriceLowToHigh:
       items.sort((a, b) => a.price - b.price);
       break;
-    // Price: high to low
-    case 2:
+    case SortMenuItems.PriceHightToLow:
       items.sort((a, b) => b.price - a.price);
       break;
-    // Top rated first
-    case 3:
+    case SortMenuItems.TopRated:
       items.sort((a, b) => b.rating - a.rating);
       break;
   }
 
-  return sortType > 0 ? items : rawItems;
+  return items;
 }
 
 export default MainPage;

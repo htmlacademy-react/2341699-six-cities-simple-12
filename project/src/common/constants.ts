@@ -5,13 +5,11 @@ export enum AppRoute {
 }
 
 export enum SortMenuItems {
-  'Popular',
-  'Price: low to high',
-  'Price: high to low',
-  'Top rated first'
+  Default = 'Popular',
+  PriceLowToHigh = 'Price: low to high',
+  PriceHightToLow = 'Price: high to low',
+  TopRated = 'Top rated first'
 }
-
-export const SORT_MENU_ITEMS = (): string[] => Object.values(SortMenuItems).filter((e) => isNaN(Number(e))).map((e) => String(e));
 
 export const API_URL = 'https://12.react.pages.academy/six-cities-simple';
 
