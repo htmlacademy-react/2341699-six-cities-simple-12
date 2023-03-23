@@ -1,19 +1,23 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
+import { MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
+import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
-import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
-import { MAX_OFFERS_NEARBY } from '../../common/constants';
 
 type PropertyPageProps = {
   offers: Offer[];
 };
 
 function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
+
+  useEffect(() => {
+    document.title = PageTitles.Property;
+  }, []);
 
   const { id } = useParams();
   const offer = offers.find((e) => e.id === Number(id));

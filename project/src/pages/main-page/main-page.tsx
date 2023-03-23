@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { Cities } from '../../mocks/cities';
+import { useEffect, useState } from 'react';
+import { PageTitles, SortMenuItems } from '../../common/constants';
 import City from '../../types/city';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
-import { SortMenuItems } from '../../common/constants';
+import { Cities } from '../../mocks/cities';
 
 type MainProps = {
   offers: Offer[];
@@ -21,8 +21,11 @@ type EmptySectionProps = {
   cityName: string;
 };
 
-
 function MainPage({ offers }: MainProps): JSX.Element {
+
+  useEffect(() => {
+    document.title = PageTitles.Main;
+  }, []);
 
   const getCityOffers = (cityName: string) => offers.filter((e) => e.city.name === cityName);
 

@@ -11,6 +11,12 @@ export enum SortMenuItems {
   TopRated = 'Top rated first'
 }
 
+export enum PageTitles {
+  Main = 'six cities simple',
+  Login = 'six cities simple: authorization',
+  Property = 'six cities simple: property',
+}
+
 export const API_URL = 'https://12.react.pages.academy/six-cities-simple';
 
 export const URL_MARKER_DEFAULT = './img/pin.svg';
