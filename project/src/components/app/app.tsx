@@ -7,6 +7,8 @@ import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/nof-found-page';
 import Offer from '../../types/offer';
 import { useState } from 'react';
+import { Provider } from 'react-redux';
+import { store } from '../../store';
 
 type AppProps = {
   offers: Offer[];
@@ -37,16 +39,18 @@ function App({ offers }: AppProps): JSX.Element {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path={AppRoute.Main} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
-          <Route index element={<Main offers={offers} />} />
-          <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
+      <Provider store={store}>
+        <Routes>
+          <Route path={AppRoute.Main} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
+            <Route index element={<Main offers={offers} />} />
+            <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
 
-          <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage offers={offers} />} />
+            <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage offers={offers} />} />
 
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </Provider>
     </BrowserRouter>
   );
 }
