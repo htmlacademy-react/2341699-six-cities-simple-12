@@ -11,6 +11,7 @@ type MapProps = {
   city: City;
   points: Points;
   selectedPoint?: Point | undefined;
+  scrollWheelZoom?: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,10 +26,10 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({ containerClassNames, city, points, selectedPoint }: MapProps): JSX.Element {
+function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom }: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
-  const [map, layerGroup] = useMap(mapRef, city);
+  const [map, layerGroup] = useMap(mapRef, city, scrollWheelZoom);
 
   useEffect(() => {
     if (map && layerGroup) {

@@ -4,7 +4,8 @@ import City from '../types/city';
 
 function useMap(
   mapRef: MutableRefObject<HTMLElement | null>,
-  city: City
+  city: City,
+  scrollWheelZoom?: boolean
 ): [Map | null, LayerGroup | null] {
 
   const [map, setMap] = useState<Map | null>(null);
@@ -19,7 +20,8 @@ function useMap(
           lat: city.location.latitude,
           lng: city.location.longitude
         },
-        zoom: 10
+        zoom: 10,
+        scrollWheelZoom: scrollWheelZoom ?? true,
       });
 
       const layer = new TileLayer(
@@ -39,7 +41,7 @@ function useMap(
 
       isRenderedRef.current = true;
     }
-  }, [mapRef, city]);
+  }, [mapRef, city, scrollWheelZoom]);
 
   return [map, layerGroup];
 }

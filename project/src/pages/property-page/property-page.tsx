@@ -121,7 +121,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
           </div>
         </div>
 
-        <Map containerClassNames='property__map map' city={currentCity} points={pointsNearby} selectedPoint={offer.location} />
+        <Map containerClassNames='property__map map' city={currentCity} points={pointsNearby} selectedPoint={offer.location} scrollWheelZoom={false} />
 
       </section>
 
