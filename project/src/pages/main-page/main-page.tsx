@@ -45,7 +45,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
     setCurrentOffers(SortOffers(offers, e));
   };
 
-  const points = offers.map((offer): Point => ({
+  const points = currentOffers.map((offer): Point => ({
     latitude: offer.location.latitude,
     longitude: offer.location.longitude
   }));

@@ -28,15 +28,19 @@ const currentCustomIcon = new Icon({
 function Map({ containerClassNames, city, points, selectedPoint }: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const [map, layerGroup] = useMap(mapRef, city);
 
   useEffect(() => {
-    if (map) {
+    if (map && layerGroup) {
+
+      layerGroup.clearLayers();
+
       points.forEach((point) => {
         const marker = new Marker({
           lat: point.latitude,
           lng: point.longitude
         });
+
 
         marker
           .setIcon(
@@ -44,10 +48,11 @@ function Map({ containerClassNames, city, points, selectedPoint }: MapProps): JS
               ? currentCustomIcon
               : defaultCustomIcon
           )
-          .addTo(map);
+          .addTo(layerGroup);
+
       });
     }
-  }, [map, points, selectedPoint]);
+  }, [map, layerGroup, points, selectedPoint]);
 
   return (
     <section className={containerClassNames} ref={mapRef} />
