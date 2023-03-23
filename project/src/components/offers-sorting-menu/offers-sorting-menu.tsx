@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import { SORT_MENU_ITEMS } from '../../common/constants';
+import { SortMenuItems } from '../../common/constants';
 
 type OffersSortingMenuProps = {
-  changeSortType: (sortType: string) => void;
+  changeSortType?: (sortType: SortMenuItems) => void;
 };
 
 function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Element {
 
   const sortMenuButtonRef = useRef(null);
   const [menuShow, setMenuShow] = useState(false);
-  const [activeItem, setActiveItem] = useState('Popular');
+  const [activeItem, setActiveItem] = useState(SortMenuItems.Default);
 
   useEffect(() => {
     if (!sortMenuButtonRef) {
@@ -26,16 +26,20 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     return () => document.body.removeEventListener('click', closeMenu);
   }, [menuShow]);
 
-  const handleChangeActiveItem = (newActiveItem: string) => {
+  const handleChangeActiveItem = (newActiveItem: SortMenuItems) => {
     setActiveItem(newActiveItem);
-    changeSortType(newActiveItem);
+
+    if (changeSortType) {
+      changeSortType(newActiveItem);
+    }
   };
 
-  const menuItems = SORT_MENU_ITEMS.map((item, i) => (
+  const menuItems = Object.values(SortMenuItems).map((item, i) => (
     <li
-      key={`places__option_${i.toString()}`}
+      key={`places__option_${String(i)}`}
       className={`places__option ${item === activeItem ? 'places__option--active' : ''}`}
-      tabIndex={0} onClick={() => handleChangeActiveItem(item)}
+      tabIndex={0}
+      onClick={() => handleChangeActiveItem(item)}
     >
       {item}
     </li>));

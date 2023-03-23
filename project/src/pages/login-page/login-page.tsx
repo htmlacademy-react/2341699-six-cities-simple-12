@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { PageTitles } from '../../common/constants';
 
 type LoginPageProps = {
   isAuthorised: boolean;
@@ -7,6 +8,10 @@ type LoginPageProps = {
 };
 
 function LoginPage({ isAuthorised, changeAuth }: LoginPageProps): JSX.Element {
+
+  useEffect(() => {
+    document.title = PageTitles.Login;
+  }, []);
 
   const [formData, setFormData] = useState({
     // данные для тестирования

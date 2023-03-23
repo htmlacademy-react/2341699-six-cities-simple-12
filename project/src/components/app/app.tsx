@@ -38,11 +38,11 @@ function App({ offers }: AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path={AppRoute.Root} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
+        <Route path={AppRoute.Main} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
           <Route index element={<Main offers={offers} />} />
           <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
 
-          <Route path={`${AppRoute.Offer}/:id`} element={<PropertyPage offers={offers} />} />
+          <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage offers={offers} />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>

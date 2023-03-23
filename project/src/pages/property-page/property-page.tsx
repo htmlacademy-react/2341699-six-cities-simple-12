@@ -1,15 +1,24 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
+import { MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
+import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
+import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
-import { GetRatingPercent } from '../../common/utils';
+import Map from '../../components/map/map';
+import OfferList from '../../components/offer-list/offer-list';
 
 type PropertyPageProps = {
   offers: Offer[];
 };
 
 function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
+
+  useEffect(() => {
+    document.title = PageTitles.Property;
+  }, []);
+
   const { id } = useParams();
   const offer = offers.find((e) => e.id === Number(id));
 
@@ -18,16 +27,31 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
     return (<Navigate to="/404" />);
   }
 
+  const currentCity = offer.city;
+
   const ratingPercent = GetRatingPercent(offer.rating);
 
+  // разбиваем описание на параграфы
   const descriptionItems = offer.description.split('\n');
+
+  const randomImages = GetRandomArrayItems<string>(offer.images, offer.images.length > 6 ? 6 : offer.images.length);
+
+  //#region Формируем данные предложений поблизости
+
+  //TODO: заменить offers на реальные данные
+  const offersNearby = GetRandomArrayItems<Offer>(offers, offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
+
+  const pointsNearby: Point[] = offersNearby.map((e) => e.location);
+  pointsNearby.push(offer.location);
+
+  //#endregion
 
   return (
     <Fragment>
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
-            {offer.images.map((imageUrl) => (
+            {randomImages.map((imageUrl) => (
               <div key={imageUrl} className="property__image-wrapper">
                 <img className="property__image" src={imageUrl} alt={offer.type} />
               </div>
@@ -71,21 +95,21 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
             <div className="property__inside">
               <h2 className="property__inside-title">What&apos;s inside</h2>
               <ul className="property__inside-list">
-                {offer?.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
+                {offer.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
               </ul>
             </div>
             <div className="property__host">
               <h2 className="property__host-title">Meet the host</h2>
               <div className="property__host-user user">
                 <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                  <img className="property__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar" />
+                  <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="property__user-name">
-                  Angelina
+                  {offer.host.name}
                 </span>
-                <span className="property__user-status">
-                  Pro
-                </span>
+
+                {offer.host.isPro && <span className="property__user-status">Pro</span>}
+
               </div>
               <div className="property__description">
                 {descriptionItems.map((text) => <p key={text} className="property__text">{text}</p>)}
@@ -96,95 +120,17 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
 
           </div>
         </div>
-        <section className="property__map map"></section>
+
+        <Map containerClassNames='property__map map' city={currentCity} points={pointsNearby} selectedPoint={offer.location} scrollWheelZoom={false} />
+
       </section>
+
       <div className="container">
-        <section className="near-places places">
-          <h2 className="near-places__title">Other places in the neighbourhood</h2>
-          <div className="near-places__list places__list">
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/room.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;80</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '80%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Wood and stone place</a>
-                </h2>
-                <p className="place-card__type">Private room</p>
-              </div>
-            </article>
 
-            <article className="near-places__card place-card">
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/apartment-02.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;132</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '80%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Canal View Prinsengracht</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
+        <OfferList offers={offersNearby} isNearPlaces />
 
-            <article className="near-places__card place-card">
-              <div className="place-card__mark">
-                <span>Premium</span>
-              </div>
-              <div className="near-places__image-wrapper place-card__image-wrapper">
-                <a href="/#">
-                  <img className="place-card__image" src="img/apartment-03.jpg" width="260" height="200" alt="Place imagе" />
-                </a>
-              </div>
-              <div className="place-card__info">
-                <div className="place-card__price-wrapper">
-                  <div className="place-card__price">
-                    <b className="place-card__price-value">&euro;180</b>
-                    <span className="place-card__price-text">&#47;&nbsp;night</span>
-                  </div>
-                </div>
-                <div className="place-card__rating rating">
-                  <div className="place-card__stars rating__stars">
-                    <span style={{ width: '100%' }}></span>
-                    <span className="visually-hidden">Rating</span>
-                  </div>
-                </div>
-                <h2 className="place-card__name">
-                  <a href="/#">Nice, cozy, warm big bed apartment</a>
-                </h2>
-                <p className="place-card__type">Apartment</p>
-              </div>
-            </article>
-          </div>
-        </section>
       </div>
+
     </Fragment>
   );
 }

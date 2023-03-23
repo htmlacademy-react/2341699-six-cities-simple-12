@@ -52,7 +52,7 @@ function SignOutLink({ changeAuth }: SignOutLinkProps): JSX.Element {
   return (
     <li className="header__nav-item">
       <Link className="header__nav-link" to="/" onClick={() => changeAuth(false)}>
-        <span className="header__signout">Sign out</span>
+        <span className="header__signout">Log Out</span>
       </Link>
     </li>
   );

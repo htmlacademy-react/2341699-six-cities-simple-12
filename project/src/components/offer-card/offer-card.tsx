@@ -4,22 +4,23 @@ import Offer from '../../types/offer';
 
 type PlaceCardProps = {
   item: Offer;
-  setFocusedItem: (item?: Offer) => void;
+  isNearPlace?: boolean;
+  setActiveItem: (item?: Offer) => void;
 };
 
-function OfferCard({ item, setFocusedItem }: PlaceCardProps): JSX.Element {
+function OfferCard({ item, isNearPlace, setActiveItem }: PlaceCardProps): JSX.Element {
 
-  const ratingPercent = GetRatingPercent(item.rating);
+  const ratingPercent = GetRatingPercent(item.rating, true);
 
   const offerUrl = `/offer/${item.id.toString()}`;
 
   return (
-    <article className="cities__card place-card">
+    <article className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>
 
       {item.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
 
-      <div className="cities__image-wrapper place-card__image-wrapper" onMouseEnter={() => setFocusedItem(item)} onMouseLeave={() => setFocusedItem()}>
-        <Link to={offerUrl}>
+      <div className={`${(isNearPlace ? 'near-places__image-wrapper' : 'cities__image-wrapper')} place-card__image-wrapper`} >
+        <Link to={offerUrl} preventScrollReset>
           <img
             className="place-card__image"
             src={item.previewImage}
@@ -45,7 +46,7 @@ function OfferCard({ item, setFocusedItem }: PlaceCardProps): JSX.Element {
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={offerUrl}>
+          <Link to={offerUrl} preventScrollReset>
             {item.title}
           </Link>
         </h2>
