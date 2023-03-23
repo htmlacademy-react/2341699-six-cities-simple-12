@@ -8,6 +8,9 @@ function ReviewList(): JSX.Element {
   // TOOD: заменить на реальные данные
   const reviewItems = Reviews.slice(0, Reviews.length > MAX_REVIEWS ? MAX_REVIEWS : Reviews.length);
 
+  // сортировка по дате - от новых к старым
+  reviewItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return (
     <section className="property__reviews reviews">
       <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{Reviews.length}</span></h2>
