@@ -9,10 +9,6 @@ import { Cities } from '../../mocks/cities';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setCity, setOffers } from '../../store/actions';
 
-type MainProps = {
-  offers: Offer[];
-};
-
 type LocationTabItemProps = {
   city: City;
   isActive: boolean;
@@ -25,13 +21,14 @@ type EmptySectionProps = {
 
 const getCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => e.city.name === cityName);
 
-function MainPage({ offers }: MainProps): JSX.Element {
+function MainPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
   const currentCity = useAppSelector((state) => state.city);
-  const currentOffers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector((state) => state.offers);
 
+  const [currentOffers, setCurrentOffers] = useState<Offer[]>([]);
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
   const [currentSortType, setSortType] = useState<SortMenuItems>(SortMenuItems.Default);
 
@@ -39,12 +36,19 @@ function MainPage({ offers }: MainProps): JSX.Element {
     document.title = PageTitles.Main;
   }, []);
 
+  // загружаем тестовые данные
+  useEffect(() => {
+    dispatch(setOffers());
+  }, [dispatch, offers]);
+
   // обновляем список предложений в зависимости от города и сортировки
   useEffect(() => {
     let cityOffers = getCityOffers(currentCity.name, offers);
     cityOffers = SortOffers(cityOffers, currentSortType);
 
-    dispatch(setOffers(cityOffers));
+    setCurrentOffers(cityOffers);
+
+    //dispatch(setOffers(cityOffers));
   }, [currentCity, dispatch, offers, currentSortType]);
 
   const points = currentOffers.map((offer): Point => ({
@@ -92,7 +96,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
 function LocationTabItem({ city, isActive, changeCurrentLocation }: LocationTabItemProps): JSX.Element {
 
   const classLink = isActive ? 'tabs__item--active' : '';
-  const href = `/#${city.name}`;
+  const href = '/#';
 
   return (
     <li className="locations__item">

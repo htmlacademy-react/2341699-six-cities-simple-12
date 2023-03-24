@@ -8,16 +8,23 @@ import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setOffers } from '../../store/actions';
 
-type PropertyPageProps = {
-  offers: Offer[];
-};
+function PropertyPage(): JSX.Element {
 
-function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const offers = useAppSelector((state) => state.offers);
 
   useEffect(() => {
     document.title = PageTitles.Property;
   }, []);
+
+  // загружаем тестовые данные
+  useEffect(() => {
+    dispatch(setOffers());
+  }, [dispatch, offers]);
 
   const { id } = useParams();
   const offer = offers.find((e) => e.id === Number(id));
