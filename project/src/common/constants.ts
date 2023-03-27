@@ -19,6 +19,7 @@ export enum PageTitles {
 }
 
 export const API_URL = 'https://12.react.pages.academy/six-cities-simple';
+export const REQUEST_TIMEOUT = 5000;
 
 export const URL_MARKER_DEFAULT = './img/pin.svg';
 
