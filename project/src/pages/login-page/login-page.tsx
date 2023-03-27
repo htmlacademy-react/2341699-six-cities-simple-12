@@ -21,7 +21,7 @@ function LoginPage({ isAuthorised, changeAuth }: LoginPageProps): JSX.Element {
 
   // если пользователь авторизован, редирект на главную
   if (isAuthorised) {
-    return (<Navigate to="/" />);
+    return (<Navigate to={'/'} replace />);
   }
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {

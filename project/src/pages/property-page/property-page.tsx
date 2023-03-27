@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
+import { AppRoute, MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
 import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
@@ -27,11 +27,17 @@ function PropertyPage(): JSX.Element {
   }, [dispatch, offers]);
 
   const { id } = useParams();
+
+  // записи предложений еще не загружены
+  if (!offers || offers.length === 0) {
+    return (<div></div>);
+  }
+
   const offer = offers.find((e) => e.id === Number(id));
 
   // предолжение не найдено, редирект на 404
   if (!offer) {
-    return (<Navigate to="/404" />);
+    return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
   const currentCity = offer.city;

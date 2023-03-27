@@ -2,6 +2,7 @@ export enum AppRoute {
   Main = '/',
   Login = '/login',
   Room = '/offer',
+  Erorr404 = '../404',
 }
 
 export enum SortMenuItems {
