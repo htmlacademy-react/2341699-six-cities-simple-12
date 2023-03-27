@@ -1,30 +1,43 @@
 import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
+import { AppRoute, MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
 import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setOffers } from '../../store/actions';
 
-type PropertyPageProps = {
-  offers: Offer[];
-};
+function PropertyPage(): JSX.Element {
 
-function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
+  const dispatch = useAppDispatch();
+
+  const offers = useAppSelector((state) => state.offers);
 
   useEffect(() => {
     document.title = PageTitles.Property;
   }, []);
 
+  // загружаем тестовые данные
+  useEffect(() => {
+    dispatch(setOffers());
+  }, [dispatch, offers]);
+
   const { id } = useParams();
+
+  // записи предложений еще не загружены
+  if (!offers || offers.length === 0) {
+    return (<div></div>);
+  }
+
   const offer = offers.find((e) => e.id === Number(id));
 
   // предолжение не найдено, редирект на 404
   if (!offer) {
-    return (<Navigate to="/404" />);
+    return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
   const currentCity = offer.city;
@@ -101,7 +114,7 @@ function PropertyPage({ offers }: PropertyPageProps): JSX.Element {
             <div className="property__host">
               <h2 className="property__host-title">Meet the host</h2>
               <div className="property__host-user user">
-                <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
+                <div className={`property__avatar-wrapper ${offer.host.isPro ? 'property__avatar-wrapper--pro' : ''} user__avatar-wrapper`}>
                   <img className="property__avatar user__avatar" src={offer.host.avatarUrl} width="74" height="74" alt="Host avatar" />
                 </div>
                 <span className="property__user-name">

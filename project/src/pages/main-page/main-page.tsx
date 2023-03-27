@@ -6,10 +6,8 @@ import { Point } from '../../types/point';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
 import { Cities } from '../../mocks/cities';
-
-type MainProps = {
-  offers: Offer[];
-};
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setCity, setOffers } from '../../store/actions';
 
 type LocationTabItemProps = {
   city: City;
@@ -21,29 +19,37 @@ type EmptySectionProps = {
   cityName: string;
 };
 
-function MainPage({ offers }: MainProps): JSX.Element {
+const getCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => e.city.name === cityName);
+
+function MainPage(): JSX.Element {
+
+  const dispatch = useAppDispatch();
+
+  const currentCity = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => state.offers);
+
+  const [currentOffers, setCurrentOffers] = useState<Offer[]>([]);
+  const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
+  const [currentSortType, setSortType] = useState<SortMenuItems>(SortMenuItems.Default);
 
   useEffect(() => {
     document.title = PageTitles.Main;
   }, []);
 
-  const getCityOffers = (cityName: string) => offers.filter((e) => e.city.name === cityName);
+  // загружаем тестовые данные
+  useEffect(() => {
+    dispatch(setOffers());
+  }, [dispatch, offers]);
 
-  // потом поменять на 0 (Paris)
-  const defaultCityIndex = 3;
+  // обновляем список предложений в зависимости от города и сортировки
+  useEffect(() => {
+    let cityOffers = getCityOffers(currentCity.name, offers);
+    cityOffers = SortOffers(cityOffers, currentSortType);
 
-  const [currentCity, setCurrentCity] = useState(Cities[defaultCityIndex]);
-  const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
-  const [currentOffers, setCurrentOffers] = useState<Offer[]>(getCityOffers(Cities[defaultCityIndex].name));
+    setCurrentOffers(cityOffers);
 
-  const handleChangeCurrentCity = (city: City) => {
-    setCurrentCity(city);
-    setCurrentOffers(getCityOffers(city.name));
-  };
-
-  const handleChangeSortType = (e: SortMenuItems) => {
-    setCurrentOffers(SortOffers(offers, e));
-  };
+    //dispatch(setOffers(cityOffers));
+  }, [currentCity, dispatch, offers, currentSortType]);
 
   const points = currentOffers.map((offer): Point => ({
     latitude: offer.location.latitude,
@@ -63,7 +69,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
                 city={city}
                 key={city.name}
                 isActive={currentCity.name === city.name}
-                changeCurrentLocation={handleChangeCurrentCity}
+                changeCurrentLocation={(e) => dispatch(setCity(e))}
               />))}
           </ul>
         </section>
@@ -75,7 +81,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
 
           {offersEmpty && <EmptySection cityName={currentCity.name} />}
 
-          {!offersEmpty && <OfferList offers={currentOffers} cityName={currentCity.name} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => handleChangeSortType(e)} />}
+          {!offersEmpty && <OfferList offers={currentOffers} cityName={currentCity.name} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => setSortType(e)} />}
 
           <div className="cities__right-section">
             {!offersEmpty && <Map containerClassNames='cities__map map' city={currentCity} points={points} selectedPoint={selectedPoint} />}
@@ -90,7 +96,7 @@ function MainPage({ offers }: MainProps): JSX.Element {
 function LocationTabItem({ city, isActive, changeCurrentLocation }: LocationTabItemProps): JSX.Element {
 
   const classLink = isActive ? 'tabs__item--active' : '';
-  const href = `/#${city.name}`;
+  const href = '/#';
 
   return (
     <li className="locations__item">

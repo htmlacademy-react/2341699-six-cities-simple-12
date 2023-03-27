@@ -34,6 +34,12 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
   useEffect(() => {
     if (map && layerGroup) {
 
+      // смещаем центр карты на город
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
+        animate: true,
+        duration: 1
+      });
+
       layerGroup.clearLayers();
 
       points.forEach((point) => {
@@ -53,7 +59,7 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
 
       });
     }
-  }, [map, layerGroup, points, selectedPoint]);
+  }, [map, layerGroup, points, selectedPoint, city]);
 
   return (
     <section className={containerClassNames} ref={mapRef} />
