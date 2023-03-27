@@ -35,7 +35,6 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
     if (map && layerGroup) {
 
       // смещаем центр карты на город
-      //map.panTo([city.location.latitude, city.location.longitude]);
       map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
         animate: true,
         duration: 1
