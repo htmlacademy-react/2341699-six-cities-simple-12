@@ -2,16 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
 import City from '../../types/city';
-import { Point, Points } from '../../types/point';
 import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
+import Offer from '../../types/offer';
 
 type MapProps = {
   containerClassNames: string | undefined;
   city: City;
-  points: Points;
-  selectedPoint?: Point | undefined;
-  scrollWheelZoom?: boolean;
+  offers: Offer[];
+  activeOffer?: Offer | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -26,19 +25,34 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom }: MapProps): JSX.Element {
+function Map({ containerClassNames, city, offers, activeOffer }: MapProps): JSX.Element {
 
   const mapRef = useRef(null);
-  const [map, layerGroup] = useMap(mapRef, city, scrollWheelZoom);
+  const [map, layerGroup] = useMap(mapRef, city);
   const [currentCity, setCurrentCity] = useState<City>();
 
   useEffect(() => {
     if (map && layerGroup && city) {
 
+      const addMarker = (offer: Offer) => {
+
+        const marker = new Marker({
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
+        });
+
+        marker
+          .setIcon(
+            activeOffer && offer.id === activeOffer.id
+              ? currentCustomIcon
+              : defaultCustomIcon
+          )
+          .addTo(layerGroup);
+      };
+
       if (currentCity !== city) {
 
         // если город уже был выбран, смещаем карту
-        // PS: по умолчанию центр задан на Paris
         if (currentCity) {
           map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
             animate: true,
@@ -51,23 +65,16 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
 
       layerGroup.clearLayers();
 
-      points.forEach((point) => {
-        const marker = new Marker({
-          lat: point.latitude,
-          lng: point.longitude
-        });
-
-        marker
-          .setIcon(
-            selectedPoint && point.longitude === selectedPoint.longitude && point.latitude === selectedPoint.latitude
-              ? currentCustomIcon
-              : defaultCustomIcon
-          )
-          .addTo(layerGroup);
-
+      offers.forEach((offer) => {
+        addMarker(offer);
       });
+
+      // добавляем маркер если есть активное предложение и его нет в массиве предложений
+      if (activeOffer && !offers.find((offer) => offer.id === activeOffer.id)) {
+        addMarker(activeOffer);
+      }
     }
-  }, [map, layerGroup, points, selectedPoint, city, currentCity]);
+  }, [map, layerGroup, offers, activeOffer, city, currentCity]);
 
   return (
     <section className={containerClassNames} ref={mapRef} />

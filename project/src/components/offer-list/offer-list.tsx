@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { SortMenuItems } from '../../common/constants';
 import Offer from '../../types/offer';
-import { Point } from '../../types/point';
 import OffersSortingMenu from '../offers-sorting-menu/offers-sorting-menu';
 import OfferCard from '../offer-card/offer-card';
 
@@ -9,7 +8,7 @@ type OfferListProps = {
   offers: Offer[];
   cityName?: string;
   isNearPlaces?: boolean;
-  changeSelectedPoint?: (point: Point | undefined) => void;
+  changeSelectedPoint?: (item: Offer | undefined) => void;
   changeSortType?: (sortType: SortMenuItems) => void;
 };
 
@@ -25,10 +24,7 @@ function OfferList(props: OfferListProps): JSX.Element {
     }
 
     if (item && changeSelectedPoint) {
-      changeSelectedPoint({
-        latitude: item.location.latitude,
-        longitude: item.location.longitude
-      });
+      changeSelectedPoint(item);
     }
   };
 

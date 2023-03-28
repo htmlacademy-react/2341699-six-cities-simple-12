@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Cities, PageTitles, SortMenuItems } from '../../common/constants';
 import Offer from '../../types/offer';
-import { Point } from '../../types/point';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -27,7 +26,8 @@ function MainPage(): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
 
   const [currentOffers, setCurrentOffers] = useState<Offer[]>([]);
-  const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
+  const [activeOffer, setActiveOffer] = useState<Offer>();
+  //const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
   const [currentSortType, setSortType] = useState<SortMenuItems>(SortMenuItems.Default);
 
   useEffect(() => {
@@ -47,11 +47,6 @@ function MainPage(): JSX.Element {
     e.preventDefault();
     dispatch(setCity(Cities[city]));
   };
-
-  const points = currentOffers.map((offer): Point => ({
-    latitude: offer.location.latitude,
-    longitude: offer.location.longitude
-  }));
 
   const offersEmpty = currentOffers.length < 1;
 
@@ -78,10 +73,10 @@ function MainPage(): JSX.Element {
 
           {offersEmpty && <EmptySection cityName={selectedCityTab} />}
 
-          {!offersEmpty && <OfferList offers={currentOffers} cityName={selectedCityTab} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => setSortType(e)} />}
+          {!offersEmpty && <OfferList offers={currentOffers} cityName={selectedCityTab} changeSelectedPoint={(e) => setActiveOffer(e)} changeSortType={(e) => setSortType(e)} />}
 
           <div className="cities__right-section">
-            {!offersEmpty && <Map containerClassNames='cities__map map' city={currentOffers[0].city} points={points} selectedPoint={selectedPoint} />}
+            {!offersEmpty && <Map containerClassNames='cities__map map' city={currentOffers[0].city} offers={currentOffers} activeOffer={activeOffer} />}
           </div>
 
         </div>

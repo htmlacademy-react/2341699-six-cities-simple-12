@@ -4,7 +4,6 @@ import { useParams } from 'react-router';
 import { AppRoute, MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
 import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
-import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
@@ -44,11 +43,7 @@ function PropertyPage(): JSX.Element {
 
   //#region Формируем данные предложений поблизости
 
-  //TODO: заменить offers на реальные данные
-  const offersNearby = GetRandomArrayItems<Offer>(offers.filter((e) => e.city.name === offer.city.name), offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
-
-  const pointsNearby: Point[] = offersNearby.map((e) => e.location);
-  pointsNearby.push(offer.location);
+  const offersNearby = GetRandomArrayItems<Offer>(offers.filter((e) => e.city.name === offer.city.name && e.id !== offer.id), offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
 
   //#endregion
 
@@ -127,7 +122,7 @@ function PropertyPage(): JSX.Element {
           </div>
         </div>
 
-        <Map containerClassNames='property__map map' city={currentCity} points={pointsNearby} selectedPoint={offer.location} scrollWheelZoom={false} />
+        <Map containerClassNames='property__map map' city={currentCity} offers={offersNearby} activeOffer={offer} />
 
       </section>
 
