@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   containerClassNames: string | undefined;
-  city: City | undefined;
+  city: City;
   points: Points;
   selectedPoint?: Point | undefined;
   scrollWheelZoom?: boolean;

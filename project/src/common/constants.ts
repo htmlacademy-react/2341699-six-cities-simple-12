@@ -1,5 +1,3 @@
-import { Point } from '../types/point';
-
 export enum AppRoute {
   Main = '/',
   Login = '/login',
@@ -45,11 +43,3 @@ export const AUTH_STORAGE_KEY = 'UserSigned';
 export const MAX_OFFERS_NEARBY = 3;
 
 export const MAX_REVIEWS = 10;
-
-// for Paris
-export const MAP_CENTER_DEFAULT: Point = {
-  longitude: 2.351499,
-  latitude: 48.85661,
-};
-
-export const MAP_ZOOM_DEFAULT = 13;

@@ -1,11 +1,10 @@
 import { useEffect, useState, MutableRefObject, useRef } from 'react';
 import { LayerGroup, Map, TileLayer } from 'leaflet';
 import City from '../types/city';
-import { MAP_CENTER_DEFAULT, MAP_ZOOM_DEFAULT } from '../common/constants';
 
 function useMap(
   mapRef: MutableRefObject<HTMLElement | null>,
-  city: City | undefined,
+  city: City,
   scrollWheelZoom?: boolean
 ): [Map | null, LayerGroup | null] {
 
@@ -18,10 +17,10 @@ function useMap(
 
       const instance = new Map(mapRef.current, {
         center: {
-          lat: city?.location.latitude ?? MAP_CENTER_DEFAULT.latitude,
-          lng: city?.location.longitude ?? MAP_CENTER_DEFAULT.longitude
+          lat: city.location.latitude,
+          lng: city.location.longitude,
         },
-        zoom: MAP_ZOOM_DEFAULT,
+        zoom: city.location.zoom,
         scrollWheelZoom: scrollWheelZoom ?? true,
       });
 

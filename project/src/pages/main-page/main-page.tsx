@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { Cities, PageTitles, SortMenuItems } from '../../common/constants';
-import City from '../../types/city';
 import Offer from '../../types/offer';
 import { Point } from '../../types/point';
 import Map from '../../components/map/map';
@@ -23,12 +22,10 @@ const getCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => 
 function MainPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const gitCityByName = (name: string) => offers.find((offer) => offer.city.name === name)?.city;
 
   const selectedCityTab = useAppSelector((state) => state.selectedCityTab);
   const offers = useAppSelector((state) => state.offers);
 
-  const [currentCity, setCurrentCity] = useState<City | undefined>(gitCityByName(selectedCityTab));
   const [currentOffers, setCurrentOffers] = useState<Offer[]>([]);
   const [selectedPoint, setSelectedPoint] = useState<Point | undefined>();
   const [currentSortType, setSortType] = useState<SortMenuItems>(SortMenuItems.Default);
@@ -49,8 +46,6 @@ function MainPage(): JSX.Element {
   const handleChangeCity = (e: React.MouseEvent<HTMLAnchorElement>, city: Cities) => {
     e.preventDefault();
     dispatch(setCity(Cities[city]));
-
-    setCurrentCity(gitCityByName(Cities[city]));
   };
 
   const points = currentOffers.map((offer): Point => ({
@@ -86,7 +81,7 @@ function MainPage(): JSX.Element {
           {!offersEmpty && <OfferList offers={currentOffers} cityName={selectedCityTab} changeSelectedPoint={(e) => setSelectedPoint(e)} changeSortType={(e) => setSortType(e)} />}
 
           <div className="cities__right-section">
-            {!offersEmpty && <Map containerClassNames='cities__map map' city={currentCity} points={points} selectedPoint={selectedPoint} />}
+            {!offersEmpty && <Map containerClassNames='cities__map map' city={currentOffers[0].city} points={points} selectedPoint={selectedPoint} />}
           </div>
 
         </div>
