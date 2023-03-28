@@ -1,7 +1,8 @@
-import City from './city';
+import { Cities } from '../common/constants';
 import Offer from './offer';
 
 export type StoreData = {
-  city: City;
+  selectedCityTab: Cities;
   offers: Offer[];
+  isOffersDataLoading: boolean;
 };

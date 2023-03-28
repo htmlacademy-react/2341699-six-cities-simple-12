@@ -1,8 +1,8 @@
 import { createAction } from '@reduxjs/toolkit';
-import City from '../types/city';
-//import Offer from '../types/offer';
+import { Cities } from '../common/constants';
+import Offer from '../types/offer';
 
-export const setCity = createAction<City>('setCity');
+export const setCity = createAction<Cities>('setCity');
 
-export const setOffers = createAction('setOffers');
-//export const setOffers = createAction<Offer[]>('setOffers');
+export const setIsOffersDataLoading = createAction<boolean>('data/setIsOffersDataLoading');
+export const loadOffers = createAction<Offer[]>('data/loadOffers');

@@ -1,28 +1,27 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { setCity, setOffers } from './actions';
+import { loadOffers, setCity, setIsOffersDataLoading } from './actions';
 import { StoreData } from '../types/store-data';
-import { Cities } from '../mocks/cities';
-import { Offers } from '../mocks/offers';
+import { Cities } from '../common/constants';
 
 const initialState: StoreData = {
-  city: Cities[0],
+  selectedCityTab: Cities.Paris,
   offers: [],
+  isOffersDataLoading: false,
 };
 
 const reducer = createReducer(initialState, (builder) => {
 
   builder.addCase(setCity, (state, action) => {
-    state.city = action.payload;
+    state.selectedCityTab = action.payload;
   });
 
-  // TODO: переделать на реальные данные
-  builder.addCase(setOffers, (state) => {
-    state.offers = Offers;
+  builder.addCase(loadOffers, (state, action) => {
+    state.offers = action.payload;
   });
 
-  // builder.addCase(setOffers, (state, action) => {
-  //   state.offers = action.payload;
-  // });
+  builder.addCase(setIsOffersDataLoading, (state, action) => {
+    state.isOffersDataLoading = action.payload;
+  });
 
 });
 

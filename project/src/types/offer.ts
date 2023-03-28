@@ -31,3 +31,5 @@ type Offer = {
 };
 
 export default Offer;
+
+export type Offers = Offer[];

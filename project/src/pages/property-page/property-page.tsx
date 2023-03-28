@@ -8,23 +8,15 @@ import { Point } from '../../types/point';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setOffers } from '../../store/actions';
+import { useAppSelector } from '../../hooks';
 
 function PropertyPage(): JSX.Element {
-
-  const dispatch = useAppDispatch();
 
   const offers = useAppSelector((state) => state.offers);
 
   useEffect(() => {
     document.title = PageTitles.Property;
   }, []);
-
-  // загружаем тестовые данные
-  useEffect(() => {
-    dispatch(setOffers());
-  }, [dispatch, offers]);
 
   const { id } = useParams();
 
@@ -47,12 +39,13 @@ function PropertyPage(): JSX.Element {
   // разбиваем описание на параграфы
   const descriptionItems = offer.description.split('\n');
 
-  const randomImages = GetRandomArrayItems<string>(offer.images, offer.images.length > 6 ? 6 : offer.images.length);
+  // массив из первых 6 фотографий
+  const randomImages = offer.images.slice(0, offer.images.length > 6 ? 6 : offer.images.length);
 
   //#region Формируем данные предложений поблизости
 
   //TODO: заменить offers на реальные данные
-  const offersNearby = GetRandomArrayItems<Offer>(offers, offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
+  const offersNearby = GetRandomArrayItems<Offer>(offers.filter((e) => e.city.name === offer.city.name), offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
 
   const pointsNearby: Point[] = offersNearby.map((e) => e.location);
   pointsNearby.push(offer.location);

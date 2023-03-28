@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
 import City from '../../types/city';
@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   containerClassNames: string | undefined;
-  city: City;
+  city: City | undefined;
   points: Points;
   selectedPoint?: Point | undefined;
   scrollWheelZoom?: boolean;
@@ -30,15 +30,24 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
 
   const mapRef = useRef(null);
   const [map, layerGroup] = useMap(mapRef, city, scrollWheelZoom);
+  const [currentCity, setCurrentCity] = useState<City>();
 
   useEffect(() => {
-    if (map && layerGroup) {
+    if (map && layerGroup && city) {
 
-      // смещаем центр карты на город
-      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
-        animate: true,
-        duration: 1
-      });
+      if (currentCity !== city) {
+
+        // если город уже был выбран, смещаем карту
+        // PS: по умолчанию центр задан на Paris
+        if (currentCity) {
+          map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
+            animate: true,
+            duration: 1
+          });
+        }
+
+        setCurrentCity(city);
+      }
 
       layerGroup.clearLayers();
 
@@ -47,7 +56,6 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
           lat: point.latitude,
           lng: point.longitude
         });
-
 
         marker
           .setIcon(
@@ -59,7 +67,7 @@ function Map({ containerClassNames, city, points, selectedPoint, scrollWheelZoom
 
       });
     }
-  }, [map, layerGroup, points, selectedPoint, city]);
+  }, [map, layerGroup, points, selectedPoint, city, currentCity]);
 
   return (
     <section className={containerClassNames} ref={mapRef} />
