@@ -6,14 +6,21 @@ import LoginPage from '../../pages/login-page/login-page';
 import PropertyPage from '../../pages/property-page/property-page';
 import NotFoundPage from '../../pages/not-found-page/nof-found-page';
 import { useState } from 'react';
-import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { useAppSelector } from '../../hooks';
+import Spinner from '../spinner/spinner';
 
 function App(): JSX.Element {
+
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
   const userSigned = localStorage.getItem(AUTH_STORAGE_KEY);
 
   const [authData, setAuthData] = useState(false);
+
+  // если данные еще не загружены показываем Спиннер
+  if (isOffersDataLoading) {
+    return (<Spinner />);
+  }
 
   const handleChangeAuth = (isAuthorised: boolean) => {
 
@@ -34,18 +41,16 @@ function App(): JSX.Element {
 
   return (
     <BrowserRouter>
-      <Provider store={store}>
-        <Routes>
-          <Route path={AppRoute.Main} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
-            <Route index element={<Main />} />
-            <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
+      <Routes>
+        <Route path={AppRoute.Main} element={<Layout changeAuth={handleChangeAuth} isAuthorised={authData} />}>
+          <Route index element={<Main />} />
+          <Route path={AppRoute.Login} element={<LoginPage changeAuth={handleChangeAuth} isAuthorised={authData} />} />
 
-            <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage />} />
+          <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage />} />
 
-            <Route path="*" element={<NotFoundPage />} />
-          </Route>
-        </Routes>
-      </Provider>
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+      </Routes>
     </BrowserRouter>
   );
 }

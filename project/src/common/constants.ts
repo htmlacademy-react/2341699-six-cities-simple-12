@@ -5,6 +5,10 @@ export enum AppRoute {
   Erorr404 = '../404',
 }
 
+export enum APIRoute {
+  Offers = '/hotels'
+}
+
 export enum SortMenuItems {
   Default = 'Popular',
   PriceLowToHigh = 'Price: low to high',
@@ -16,6 +20,15 @@ export enum PageTitles {
   Main = 'six cities simple',
   Login = 'six cities simple: authorization',
   Property = 'six cities simple: property',
+}
+
+export enum Cities {
+  Paris = 'Paris',
+  Cologne = 'Cologne',
+  Brussels = 'Brussels',
+  Amsterdam = 'Amsterdam',
+  Hamburg = 'Hamburg',
+  Dusseldorf = 'Dusseldorf'
 }
 
 export const API_URL = 'https://12.react.pages.academy/six-cities-simple';
