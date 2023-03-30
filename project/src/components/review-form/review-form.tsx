@@ -1,10 +1,6 @@
 import { Fragment, useEffect, useState } from 'react';
-import { AUTH_STORAGE_KEY } from '../../common/constants';
 
 function ReviewForm(): JSX.Element {
-
-  const userSigned = localStorage.getItem(AUTH_STORAGE_KEY);
-  const showForm = userSigned && Boolean(userSigned);
 
   const [comment, setComment] = useState<string>();
   const [rating, setRating] = useState<number | undefined>(undefined);
@@ -47,10 +43,6 @@ function ReviewForm(): JSX.Element {
   };
 
   const ratingArray = [5, 4, 3, 2, 1];
-
-  if (!showForm) {
-    return <Fragment> </Fragment>;
-  }
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>

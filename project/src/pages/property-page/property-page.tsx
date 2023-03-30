@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { AppRoute, MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
-import { GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
+import { Capitalized, GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
@@ -80,7 +80,7 @@ function PropertyPage(): JSX.Element {
 
             <ul className="property__features">
               <li className="property__feature property__feature--entire">
-                {offer.type}
+                {Capitalized(offer.type)}
               </li>
               <li className="property__feature property__feature--bedrooms">
                 {offer.bedrooms} {offer?.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}

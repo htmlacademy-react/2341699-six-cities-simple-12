@@ -1,27 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import { PageTitles } from '../../common/constants';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import * as yup from 'yup';
+import { AppRoute, AuthorizationStatus, Cities, PageTitles } from '../../common/constants';
+import { GetRandomArrayItem } from '../../common/utils';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { setCity } from '../../store/actions';
+import { loginAction } from '../../store/api-actions';
+import { AuthData } from '../../types/auth-data';
 
-type LoginPageProps = {
-  isAuthorised: boolean;
-  changeAuth: (isAuthorised: boolean) => void;
-};
+function LoginPage(): JSX.Element {
 
-function LoginPage({ isAuthorised, changeAuth }: LoginPageProps): JSX.Element {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   useEffect(() => {
     document.title = PageTitles.Login;
   }, []);
 
-  const [formData, setFormData] = useState({
+  const [randomCity,] = useState(GetRandomArrayItem<Cities>(Object.values(Cities)));
+
+  const [formData, setFormData] = useState<AuthData>({
     // данные для тестирования
     email: 'Oliver.conner@gmail.com',
     password: 'test123'
   });
 
   // если пользователь авторизован, редирект на главную
-  if (isAuthorised) {
-    return (<Navigate to={'/'} replace />);
+  if (authorizationStatus === AuthorizationStatus.Auth) {
+    return (<Navigate to={AppRoute.Main} replace />);
   }
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
@@ -32,14 +40,27 @@ function LoginPage({ isAuthorised, changeAuth }: LoginPageProps): JSX.Element {
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (formData.email && validatePassword(formData.password)) {
-      changeAuth(true);
-    }
+    const authDataShema = yup.object({
+      email: yup.string()
+        .required('Email is a required field')
+        .email('Email must be a valid email'),
+      password: yup.string()
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/g, 'Password must contain at least one number and letter'),
+    });
+
+    authDataShema
+      .validate(formData)
+      .then(() => dispatch(loginAction(formData)))
+      .catch((err: yup.ValidationError) => {
+        err.errors.forEach((errorText) => toast.error(errorText));
+      });
   };
 
-  const validatePassword = (password: string): boolean => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$/g;
-    return regex.test(password);
+  // переход на город
+  const handleNavigateToCity = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    dispatch(setCity(Cities[randomCity]));
+    navigate(AppRoute.Main, { replace: true });
   };
 
   return (
@@ -61,8 +82,8 @@ function LoginPage({ isAuthorised, changeAuth }: LoginPageProps): JSX.Element {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="/#">
-              <span>Amsterdam</span>
+            <a className="locations__item-link" href={'/'} onClick={(e) => handleNavigateToCity(e)}>
+              <span>{randomCity}</span>
             </a>
           </div>
         </section>
