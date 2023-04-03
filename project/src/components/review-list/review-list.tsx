@@ -5,7 +5,7 @@ import ReviewForm from '../review-form/review-form';
 import ReviewItem from '../review-item/review-item';
 
 type ReviewListProps = {
-  offerId: number,
+  offerId: number;
   items: Review[];
 }
 

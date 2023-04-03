@@ -12,5 +12,5 @@ export type StoreData = {
   authorizationStatus: AuthorizationStatus;
   userProfile: UserData | undefined;
   reviews: Review[];
-  createReviewLoading: boolean,
+  createReviewLoading: boolean;
 };
