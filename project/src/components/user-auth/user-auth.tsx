@@ -28,10 +28,16 @@ function UserAuth(): JSX.Element {
 export default UserAuth;
 
 function UserProfile(): JSX.Element {
+
+  const email = useAppSelector((state) => state.userProfile?.email);
+  const avatarUrl = useAppSelector((state) => state.userProfile?.avatarUrl);
+
   return (
     <div className="header__nav-profile">
-      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+      <div className="header__avatar-wrapper user__avatar-wrapper">
+        {avatarUrl && <img src={avatarUrl} alt={email} />}
+      </div>
+      <span className="header__user-name user__name">{email}</span>
     </div>
   );
 }

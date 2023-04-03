@@ -1,11 +1,33 @@
 import { Fragment, useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { addReviewAction } from '../../store/api-actions';
 
-function ReviewForm(): JSX.Element {
+type ReviewFormProps = {
+  offerId: number;
+};
+
+function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
+
+  const dispatch = useAppDispatch();
+  const createReviewLoading = useAppSelector((state) => state.createReviewLoading);
+
+  const ratingArray = [5, 4, 3, 2, 1];
 
   const [comment, setComment] = useState<string>();
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [submitActive, setSubmitActive] = useState(false);
-  const [formDisabled, setFormDisabled] = useState(false);
+
+  const clearForm = () => {
+    if (rating) {
+      const ratingElement = document.getElementById(`${rating}-stars`);
+      if (ratingElement) {
+        (ratingElement as HTMLInputElement).checked = false;
+      }
+    }
+
+    setRating(undefined);
+    setComment('');
+  };
 
   // проверка условий ТЗ - выставлен рейтинг, комментарий в промежутке от 50 до 300 символов
   useEffect(() => {
@@ -20,29 +42,20 @@ function ReviewForm(): JSX.Element {
     e.preventDefault();
 
     // отправка формы в разработке
-    setFormDisabled(true);
-
-    // эмулируем отправку данных
-    setTimeout(() => {
-      clearForm();
-    }, 2000);
-
-  };
-
-  const clearForm = () => {
-    if (rating) {
-      const ratingElement = document.getElementById(`${rating}-stars`);
-      if (ratingElement) {
-        (ratingElement as HTMLInputElement).checked = false;
-      }
+    if (comment && rating) {
+      dispatch(addReviewAction({
+        offerId: offerId,
+        comment: comment,
+        rating: rating
+      }))
+        .then((result) => {
+          // странная шляпа
+          if (result.meta.requestStatus === 'fulfilled') {
+            clearForm();
+          }
+        });
     }
-
-    setRating(undefined);
-    setComment('');
-    setFormDisabled(false);
   };
-
-  const ratingArray = [5, 4, 3, 2, 1];
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
@@ -57,7 +70,7 @@ function ReviewForm(): JSX.Element {
               id={`${r}-stars`}
               type="radio"
               onChange={() => setRating(r)}
-              disabled={formDisabled}
+              disabled={createReviewLoading}
             />
             <label htmlFor={`${r}-stars`} className="reviews__rating-label form__rating-label" title="perfect">
               <svg className="form__star-image" width="37" height="33">
@@ -73,14 +86,14 @@ function ReviewForm(): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         value={comment}
         onChange={handleChangeComment}
-        disabled={formDisabled}
+        disabled={createReviewLoading}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!submitActive || formDisabled}>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" disabled={!submitActive || createReviewLoading}>Submit</button>
       </div>
     </form>
   );

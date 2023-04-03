@@ -1,34 +1,43 @@
 import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { AppRoute, MAX_OFFERS_NEARBY, PageTitles } from '../../common/constants';
-import { Capitalized, GetRandomArrayItems, GetRatingPercent } from '../../common/utils';
-import Offer from '../../types/offer';
+import { AppRoute, PageTitles } from '../../common/constants';
+import { Capitalized, GetRatingPercent } from '../../common/utils';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import Spinner from '../../components/spinner/spinner';
+import { fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../../store/api-actions';
 
 function PropertyPage(): JSX.Element {
 
-  const offers = useAppSelector((state) => state.offers);
+  const dispatch = useAppDispatch();
+  const offersNearby = useAppSelector((state) => state.offersNearby);
+  const offer = useAppSelector((state) => state.currentOffer);
+  const reviews = useAppSelector((state) => state.reviews);
+
+  const { id } = useParams();
+  const offerId = Number(id);
 
   useEffect(() => {
     document.title = PageTitles.Property;
   }, []);
 
-  const { id } = useParams();
+  useEffect(() => {
+    dispatch(fetchOfferAction(offerId));
+    dispatch(fetchOffersNearbyAction(offerId));
+    dispatch(fetchReviewsAction(offerId));
+  }, [offerId, dispatch]);
 
-  // записи предложений еще не загружены
-  if (!offers || offers.length === 0) {
-    return (<div></div>);
+
+  if (isNaN(Number(id))) {
+    return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
-  const offer = offers.find((e) => e.id === Number(id));
-
-  // предолжение не найдено, редирект на 404
+  // загрузка данных
   if (!offer) {
-    return (<Navigate to={AppRoute.Erorr404} replace />);
+    return (<Spinner />);
   }
 
   const currentCity = offer.city;
@@ -40,12 +49,6 @@ function PropertyPage(): JSX.Element {
 
   // массив из первых 6 фотографий
   const randomImages = offer.images.slice(0, offer.images.length > 6 ? 6 : offer.images.length);
-
-  //#region Формируем данные предложений поблизости
-
-  const offersNearby = GetRandomArrayItems<Offer>(offers.filter((e) => e.city.name === offer.city.name && e.id !== offer.id), offers.length > MAX_OFFERS_NEARBY ? MAX_OFFERS_NEARBY : offers.length);
-
-  //#endregion
 
   return (
     <Fragment>
@@ -117,7 +120,7 @@ function PropertyPage(): JSX.Element {
               </div>
             </div>
 
-            <ReviewList />
+            <ReviewList items={reviews} offerId={offer.id} />
 
           </div>
         </div>

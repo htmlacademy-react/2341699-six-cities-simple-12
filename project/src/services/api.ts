@@ -1,8 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import {
-  StatusCodes
-} from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { API_URL, REQUEST_TIMEOUT } from '../common/constants';
 import { getToken } from './token';
 
@@ -34,7 +32,6 @@ export const createAPI = (): AxiosInstance => {
     if (error.response && shouldDisplayError(error.response)) {
       toast.warn(error.response.data.error);
     }
-
     throw error;
   });
 
