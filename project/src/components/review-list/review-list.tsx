@@ -1,9 +1,12 @@
-import { MAX_REVIEWS } from '../../common/constants';
+import { AuthorizationStatus, MAX_REVIEWS } from '../../common/constants';
+import { useAppSelector } from '../../hooks';
 import { Reviews } from '../../mocks/reviews';
 import ReviewForm from '../review-form/review-form';
 import ReviewItem from '../review-item/review-item';
 
 function ReviewList(): JSX.Element {
+
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
 
   // TOOD: заменить на реальные данные
   const reviewItems = Reviews.slice(0, Reviews.length > MAX_REVIEWS ? MAX_REVIEWS : Reviews.length);
@@ -18,8 +21,7 @@ function ReviewList(): JSX.Element {
         {reviewItems.map((item) => <ReviewItem key={`review-${item.id}`} item={item} />)}
       </ul>
 
-      {/* TODO: Добавить проверку - если пользователь авторизован, показывать форму */}
-      <ReviewForm />
+      {(authorizationStatus === AuthorizationStatus.Auth) && <ReviewForm />}
 
     </section>
   );

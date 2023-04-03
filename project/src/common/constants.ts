@@ -6,7 +6,15 @@ export enum AppRoute {
 }
 
 export enum APIRoute {
-  Offers = '/hotels'
+  Offers = '/hotels',
+  Login = '/login',
+  Logout = '/logout',
+}
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
 }
 
 export enum SortMenuItems {

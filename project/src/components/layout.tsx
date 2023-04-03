@@ -3,12 +3,7 @@ import { useLocation } from 'react-router-dom';
 import Header from './header/header';
 import ScrollToTop from './scroll-to-top/scroll-to-top';
 
-type LayoutProps = {
-  isAuthorised: boolean;
-  changeAuth: (isAuthorised: boolean) => void;
-};
-
-function Layout({ changeAuth, isAuthorised }: LayoutProps): JSX.Element {
+function Layout(): JSX.Element {
 
   let rootClassName: string;
   const location = useLocation();
@@ -28,7 +23,7 @@ function Layout({ changeAuth, isAuthorised }: LayoutProps): JSX.Element {
   return (
     <div className={`page  ${rootClassName}`}>
       <ScrollToTop />
-      <Header changeAuth={changeAuth} isAuthorised={isAuthorised} />
+      <Header />
       <Outlet />
     </div>
   );
