@@ -1,4 +1,4 @@
-const AUTH_TOKEN_KEY_NAME = 'token';
+import { AUTH_TOKEN_KEY_NAME } from '../common/constants';
 
 export type Token = string;
 

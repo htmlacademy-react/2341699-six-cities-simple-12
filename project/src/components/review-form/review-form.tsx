@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { NameSpace } from '../../common/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addReviewAction } from '../../store/api-actions';
 
@@ -9,7 +10,7 @@ type ReviewFormProps = {
 function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const createReviewLoading = useAppSelector((state) => state.createReviewLoading);
+  const createReviewLoading = useAppSelector((state) => state[NameSpace.PropertyData].createReviewLoading);
 
   const ratingArray = [5, 4, 3, 2, 1];
 

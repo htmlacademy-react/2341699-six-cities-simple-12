@@ -1,4 +1,5 @@
-import { AuthorizationStatus, MAX_REVIEWS } from '../../common/constants';
+import { useEffect, useState } from 'react';
+import { AuthorizationStatus, MAX_REVIEWS, NameSpace } from '../../common/constants';
 import { useAppSelector } from '../../hooks';
 import Review from '../../types/review';
 import ReviewForm from '../review-form/review-form';
@@ -11,15 +12,24 @@ type ReviewListProps = {
 
 function ReviewList({ offerId, items }: ReviewListProps): JSX.Element {
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
 
-  // TOOD: заменить на реальные данные
-  const reviewItems = items.slice(0, items.length > MAX_REVIEWS ? MAX_REVIEWS : items.length);
+  const [reviewItems, setReviewItems] = useState<Review[]>([]);
 
-  // сортировка по дате - от новых к старым
-  if (reviewItems.length > 1) {
-    reviewItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }
+  useEffect(() => {
+    // создаем копию массива
+    let tempItems = items.map((e) => e);
+
+    // сортировка по дате - от новых к старым
+    if (tempItems.length > 1) {
+      tempItems.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    }
+
+    // оставляем не больше 10 записей
+    tempItems = tempItems.slice(0, tempItems.length > MAX_REVIEWS ? MAX_REVIEWS : tempItems.length);
+
+    setReviewItems(tempItems);
+  }, [items]);
 
   return (
     <section className="property__reviews reviews">

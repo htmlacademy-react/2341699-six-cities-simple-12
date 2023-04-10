@@ -5,15 +5,17 @@ import * as yup from 'yup';
 import { AppRoute, AuthorizationStatus, Cities, PageTitles } from '../../common/constants';
 import { GetRandomArrayItem } from '../../common/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCity } from '../../store/actions';
 import { loginAction } from '../../store/api-actions';
+import { setCity } from '../../store/main-data/main-data';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { AuthData } from '../../types/auth-data';
 
 function LoginPage(): JSX.Element {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   useEffect(() => {
     document.title = PageTitles.Login;
@@ -22,9 +24,8 @@ function LoginPage(): JSX.Element {
   const [randomCity,] = useState(GetRandomArrayItem<Cities>(Object.values(Cities)));
 
   const [formData, setFormData] = useState<AuthData>({
-    // данные для тестирования
-    email: 'Oliver.conner@gmail.com',
-    password: 'test123'
+    email: '',
+    password: ''
   });
 
   // если пользователь авторизован, редирект на главную

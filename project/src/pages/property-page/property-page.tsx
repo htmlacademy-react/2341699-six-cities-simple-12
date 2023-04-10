@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { AppRoute, PageTitles } from '../../common/constants';
@@ -9,13 +9,18 @@ import OfferList from '../../components/offer-list/offer-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Spinner from '../../components/spinner/spinner';
 import { fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../../store/api-actions';
+import { getCurrentOffer, getHasError404, getOffersNearby, getReviews } from '../../store/property-data/selectors';
 
 function PropertyPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const offersNearby = useAppSelector((state) => state.offersNearby);
-  const offer = useAppSelector((state) => state.currentOffer);
-  const reviews = useAppSelector((state) => state.reviews);
+
+  const offersNearby = useAppSelector(getOffersNearby);
+  const offer = useAppSelector(getCurrentOffer);
+  const reviews = useAppSelector(getReviews);
+  const hasError404 = useAppSelector(getHasError404);
+
+  const [pageLoading, setPageLoading] = useState(true);
 
   const { id } = useParams();
   const offerId = Number(id);
@@ -25,18 +30,29 @@ function PropertyPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
+    setPageLoading(true);
     dispatch(fetchOfferAction(offerId));
-    dispatch(fetchOffersNearbyAction(offerId));
-    dispatch(fetchReviewsAction(offerId));
   }, [offerId, dispatch]);
 
+  useEffect(() => {
+    if (!offer) { return; }
+    setPageLoading(false);
+    dispatch(fetchOffersNearbyAction(offer.id));
+    dispatch(fetchReviewsAction(offer.id));
+  }, [dispatch, offer]);
 
-  if (isNaN(Number(id))) {
+  useEffect(() => {
+    if (hasError404) {
+      setPageLoading(false);
+    }
+  }, [hasError404]);
+
+  if (!pageLoading && (isNaN(offerId) || hasError404)) {
     return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
   // загрузка данных
-  if (!offer) {
+  if (pageLoading || !offer) {
     return (<Spinner />);
   }
 

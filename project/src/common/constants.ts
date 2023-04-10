@@ -1,8 +1,14 @@
+export enum NameSpace {
+  MainData = 'MAIN-DATA',
+  PropertyData = 'PROPERTY-DATA',
+  User = 'USER',
+}
+
 export enum AppRoute {
   Main = '/',
   Login = '/login',
   Room = '/offer',
-  Erorr404 = '../404',
+  Erorr404 = '/Error404',
 }
 
 export enum APIRoute {
@@ -47,7 +53,7 @@ export const URL_MARKER_DEFAULT = './img/pin.svg';
 
 export const URL_MARKER_CURRENT = './img/pin-active.svg';
 
-export const AUTH_STORAGE_KEY = 'UserSigned';
+export const AUTH_TOKEN_KEY_NAME = 'x-token';
 
 export const MAX_OFFERS_NEARBY = 3;
 

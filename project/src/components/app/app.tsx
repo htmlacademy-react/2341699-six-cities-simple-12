@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AppRoute } from '../../common/constants';
+import { AppRoute, NameSpace } from '../../common/constants';
 import Layout from '../layout';
 import Main from '../../pages/main-page/main-page';
 import LoginPage from '../../pages/login-page/login-page';
@@ -10,7 +10,7 @@ import Spinner from '../spinner/spinner';
 
 function App(): JSX.Element {
 
-  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+  const isOffersDataLoading = useAppSelector((state) => state[NameSpace.MainData].isOffersDataLoading);
 
   // если данные еще не загружены показываем Спиннер
   if (isOffersDataLoading) {
@@ -26,6 +26,7 @@ function App(): JSX.Element {
 
           <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage />} />
 
+          <Route path={AppRoute.Erorr404} element={<NotFoundPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
