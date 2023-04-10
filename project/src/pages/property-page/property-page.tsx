@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import Spinner from '../../components/spinner/spinner';
 import { fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../../store/api-actions';
 import { getCurrentOffer, getHasError404, getOffersNearby, getReviews } from '../../store/property-data/selectors';
+import { setActiveOffer } from '../../store/main-data/main-data';
 
 function PropertyPage(): JSX.Element {
 
@@ -39,6 +40,7 @@ function PropertyPage(): JSX.Element {
     setPageLoading(false);
     dispatch(fetchOffersNearbyAction(offer.id));
     dispatch(fetchReviewsAction(offer.id));
+    dispatch(setActiveOffer(offer));
   }, [dispatch, offer]);
 
   useEffect(() => {
@@ -141,7 +143,7 @@ function PropertyPage(): JSX.Element {
           </div>
         </div>
 
-        <Map containerClassNames='property__map map' city={currentCity} offers={offersNearby} activeOffer={offer} />
+        <Map containerClassNames='property__map map' city={currentCity} offers={offersNearby} />
 
       </section>
 
