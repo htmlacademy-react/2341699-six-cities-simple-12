@@ -4,8 +4,8 @@ import Map from '../map/map';
 import { useEffect, useState } from 'react';
 import { GetCityOffers, SortOffers } from '../../common/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { NameSpace, SortMenuItems } from '../../common/constants';
-import { getOffers } from '../../store/main-data/selectors';
+import { SortMenuItems } from '../../common/constants';
+import { getCurrentCity, getCurrentOffers, getOffers, getSortedOffers } from '../../store/main-data/selectors';
 import { setCurrentOffers, setSortedOffers } from '../../store/main-data/main-data';
 
 function OffersContainer(): JSX.Element {
@@ -13,9 +13,9 @@ function OffersContainer(): JSX.Element {
   const dispatch = useAppDispatch();
 
   // обращаемся на прямую в сторе
-  const selectedCityTab = useAppSelector((state) => state[NameSpace.MainData].currentCity);
-  const currentOffers = useAppSelector((state) => state[NameSpace.MainData].currentOffers);
-  const sortedOffers = useAppSelector((state) => state[NameSpace.MainData].sortedOffers);
+  const selectedCityTab = useAppSelector(getCurrentCity);
+  const currentOffers = useAppSelector(getCurrentOffers);
+  const sortedOffers = useAppSelector(getSortedOffers);
 
   const offers = useAppSelector(getOffers);
 
