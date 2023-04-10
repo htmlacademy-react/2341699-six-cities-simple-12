@@ -3,29 +3,30 @@ import { SortMenuItems } from '../../common/constants';
 import Offer from '../../types/offer';
 import OffersSortingMenu from '../offers-sorting-menu/offers-sorting-menu';
 import OfferCard from '../offer-card/offer-card';
+import { useAppDispatch } from '../../hooks';
+import { setActiveOffer } from '../../store/main-data/main-data';
 
 type OfferListProps = {
   offers: Offer[];
   cityName?: string;
   isNearPlaces?: boolean;
-  changeSelectedPoint?: (item: Offer | undefined) => void;
+  isAllowChangeActivePoint?: boolean;
   changeSortType?: (sortType: SortMenuItems) => void;
 };
 
 function OfferList(props: OfferListProps): JSX.Element {
 
-  const { offers, cityName, isNearPlaces } = props;
-  const { changeSelectedPoint, changeSortType } = props;
+  const dispatch = useAppDispatch();
+
+  const { offers, cityName, isNearPlaces, isAllowChangeActivePoint } = props;
+  const { changeSortType } = props;
 
   const changeSelectedOffer = (item: Offer | undefined) => {
-    if (!item && changeSelectedPoint) {
-      changeSelectedPoint(undefined);
+    if (!isAllowChangeActivePoint) {
       return;
     }
 
-    if (item && changeSelectedPoint) {
-      changeSelectedPoint(item);
-    }
+    dispatch(setActiveOffer(item));
   };
 
   const offerCards = offers.map((item) => {

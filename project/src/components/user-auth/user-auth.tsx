@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../common/constants';
+import { AppRoute, AuthorizationStatus, NameSpace } from '../../common/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
 
@@ -7,7 +7,7 @@ function UserAuth(): JSX.Element {
 
   const location = useLocation();
 
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
 
   const isAuthorised = authorizationStatus === AuthorizationStatus.Auth;
   const isLoginPage = location.pathname === AppRoute.Login;
@@ -28,10 +28,16 @@ function UserAuth(): JSX.Element {
 export default UserAuth;
 
 function UserProfile(): JSX.Element {
+
+  const email = useAppSelector((state) => state[NameSpace.User].userProfile?.email);
+  const avatarUrl = useAppSelector((state) => state[NameSpace.User].userProfile?.avatarUrl);
+
   return (
     <div className="header__nav-profile">
-      <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-      <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
+      <div className="header__avatar-wrapper user__avatar-wrapper">
+        {avatarUrl && <img src={avatarUrl} alt={email} />}
+      </div>
+      <span className="header__user-name user__name">{email}</span>
     </div>
   );
 }

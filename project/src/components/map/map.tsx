@@ -1,16 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
-import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
+import { NameSpace, URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
 import City from '../../types/city';
 import useMap from '../../hooks/useMap';
 import 'leaflet/dist/leaflet.css';
 import Offer from '../../types/offer';
+import { useAppSelector } from '../../hooks';
 
 type MapProps = {
   containerClassNames: string | undefined;
   city: City;
   offers: Offer[];
-  activeOffer?: Offer | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -25,7 +25,9 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({ containerClassNames, city, offers, activeOffer }: MapProps): JSX.Element {
+function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
+
+  const activeOffer = useAppSelector((state) => state[NameSpace.MainData].activeOffer);
 
   const mapRef = useRef(null);
   const [map, layerGroup] = useMap(mapRef, city);
