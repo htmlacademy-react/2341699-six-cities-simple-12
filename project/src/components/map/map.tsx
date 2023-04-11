@@ -52,16 +52,12 @@ function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
           .addTo(layerGroup);
       };
 
-      if (currentCity !== city) {
-        map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
-          animate: true,
-          duration: 0.75
-        });
+      layerGroup.clearLayers();
 
+      if (currentCity !== city) {
+        map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
         setCurrentCity(city);
       }
-
-      layerGroup.clearLayers();
 
       offers.forEach((offer) => {
         addMarker(offer);
