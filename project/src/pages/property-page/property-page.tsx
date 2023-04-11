@@ -1,27 +1,29 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { AppRoute, PageTitles } from '../../common/constants';
-import { Capitalized, GetRatingPercent } from '../../common/utils';
+import { getCapitalized, getRatingPercent } from '../../common/utils';
 import ReviewList from '../../components/review-list/review-list';
 import Map from '../../components/map/map';
 import OfferList from '../../components/offer-list/offer-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import Spinner from '../../components/spinner/spinner';
 import { fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../../store/api-actions';
-import { getCurrentOffer, getHasError404, getOffersNearby, getReviews } from '../../store/property-data/selectors';
+import { getCurrentOffer, getCurrentOfferLoading, getHasError404, getOffersNearby, getOffersNearbyLoading } from '../../store/property-data/selectors';
 import { setActiveOffer } from '../../store/main-data/main-data';
+import LoaderLine from '../../components/loader-line/loader-line';
 
 function PropertyPage(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
   const offersNearby = useAppSelector(getOffersNearby);
-  const offer = useAppSelector(getCurrentOffer);
-  const reviews = useAppSelector(getReviews);
-  const hasError404 = useAppSelector(getHasError404);
+  const offersNearbyLoading = useAppSelector(getOffersNearbyLoading);
 
-  const [pageLoading, setPageLoading] = useState(true);
+  const offer = useAppSelector(getCurrentOffer);
+  const offerLoading = useAppSelector(getCurrentOfferLoading);
+
+  const hasError404 = useAppSelector(getHasError404);
 
   const { id } = useParams();
   const offerId = Number(id);
@@ -31,36 +33,28 @@ function PropertyPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
-    setPageLoading(true);
     dispatch(fetchOfferAction(offerId));
   }, [offerId, dispatch]);
 
   useEffect(() => {
     if (!offer) { return; }
-    setPageLoading(false);
     dispatch(fetchOffersNearbyAction(offer.id));
     dispatch(fetchReviewsAction(offer.id));
     dispatch(setActiveOffer(offer));
   }, [dispatch, offer]);
 
-  useEffect(() => {
-    if (hasError404) {
-      setPageLoading(false);
-    }
-  }, [hasError404]);
-
-  if (!pageLoading && (isNaN(offerId) || hasError404)) {
+  if (!offerLoading && (isNaN(offerId) || hasError404)) {
     return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
   // загрузка данных
-  if (pageLoading || !offer) {
+  if (offerLoading || !offer) {
     return (<Spinner />);
   }
 
   const currentCity = offer.city;
 
-  const ratingPercent = GetRatingPercent(offer.rating);
+  const ratingPercent = getRatingPercent(offer.rating);
 
   // разбиваем описание на параграфы
   const descriptionItems = offer.description.split('\n');
@@ -101,7 +95,7 @@ function PropertyPage(): JSX.Element {
 
             <ul className="property__features">
               <li className="property__feature property__feature--entire">
-                {Capitalized(offer.type)}
+                {getCapitalized(offer.type)}
               </li>
               <li className="property__feature property__feature--bedrooms">
                 {offer.bedrooms} {offer?.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}
@@ -138,7 +132,7 @@ function PropertyPage(): JSX.Element {
               </div>
             </div>
 
-            <ReviewList items={reviews} offerId={offer.id} />
+            <ReviewList offerId={offer.id} />
 
           </div>
         </div>
@@ -148,9 +142,7 @@ function PropertyPage(): JSX.Element {
       </section>
 
       <div className="container">
-
-        <OfferList offers={offersNearby} isNearPlaces />
-
+        {offersNearbyLoading ? <LoaderLine /> : <OfferList offers={offersNearby} isNearPlaces />}
       </div>
 
     </Fragment>

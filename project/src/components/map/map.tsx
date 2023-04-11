@@ -53,14 +53,10 @@ function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
       };
 
       if (currentCity !== city) {
-
-        // если город уже был выбран, смещаем карту
-        if (currentCity) {
-          map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
-            animate: true,
-            duration: 1
-          });
-        }
+        map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
+          animate: true,
+          duration: 0.75
+        });
 
         setCurrentCity(city);
       }

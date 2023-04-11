@@ -7,9 +7,8 @@ import { fetchOffersAction } from '../api-actions';
 const initialState: MainData = {
   currentCity: Cities.Paris,
   offers: [],
-  isOffersDataLoading: false,
+  offersLoading: false,
   currentOffers: [],
-  sortedOffers: [],
   activeOffer: undefined
 };
 
@@ -23,9 +22,6 @@ export const offersData = createSlice({
     setCurrentOffers: (state, action: PayloadAction<Offer[]>) => {
       state.currentOffers = action.payload;
     },
-    setSortedOffers: (state, action: PayloadAction<Offer[]>) => {
-      state.sortedOffers = action.payload;
-    },
     setActiveOffer: (state, action: PayloadAction<Offer | undefined>) => {
       state.activeOffer = action.payload;
     },
@@ -33,16 +29,16 @@ export const offersData = createSlice({
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
-        state.isOffersDataLoading = true;
+        state.offersLoading = true;
       })
       .addCase(fetchOffersAction.fulfilled, (state, action) => {
         state.offers = action.payload;
-        state.isOffersDataLoading = false;
+        state.offersLoading = false;
       })
       .addCase(fetchOffersAction.rejected, (state) => {
-        state.isOffersDataLoading = false;
+        state.offersLoading = false;
       });
   }
 });
 
-export const { setCity, setCurrentOffers, setSortedOffers, setActiveOffer } = offersData.actions;
+export const { setCity, setCurrentOffers, setActiveOffer } = offersData.actions;

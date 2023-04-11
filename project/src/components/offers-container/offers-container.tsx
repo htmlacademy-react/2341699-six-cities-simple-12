@@ -2,35 +2,33 @@ import EmptySection from '../empty-section/empty-section';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
 import { useEffect, useState } from 'react';
-import { GetCityOffers, SortOffers } from '../../common/utils';
+import { getCityOffers, getSortedOffers } from '../../common/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortMenuItems } from '../../common/constants';
-import { getCurrentCity, getCurrentOffers, getOffers, getSortedOffers } from '../../store/main-data/selectors';
-import { setCurrentOffers, setSortedOffers } from '../../store/main-data/main-data';
+import { getCurrentCity, getCurrentOffers, getOffers } from '../../store/main-data/selectors';
+import { setCurrentOffers } from '../../store/main-data/main-data';
+import Offer from '../../types/offer';
 
 function OffersContainer(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  // обращаемся на прямую в сторе
-  const selectedCityTab = useAppSelector(getCurrentCity);
-  const currentOffers = useAppSelector(getCurrentOffers);
-  const sortedOffers = useAppSelector(getSortedOffers);
-
   const offers = useAppSelector(getOffers);
+  const currentCity = useAppSelector(getCurrentCity);
+  const currentOffers = useAppSelector(getCurrentOffers);
 
   const [currentSortType, setSortType] = useState<SortMenuItems>(SortMenuItems.Default);
+  const [sortedOffers, setSortedOffers] = useState<Offer[]>([]);
 
   // обновляем список предложений в зависимости от города
   useEffect(() => {
-    const items = GetCityOffers(selectedCityTab, offers);
+    const items = getCityOffers(currentCity, offers);
     dispatch(setCurrentOffers(items));
-  }, [dispatch, selectedCityTab, offers]);
+  }, [dispatch, currentCity, offers]);
 
   // сортировка
   useEffect(() => {
-    const items = SortOffers(currentOffers, currentSortType);
-    dispatch(setSortedOffers(items));
+    setSortedOffers(getSortedOffers(currentOffers, currentSortType));
   }, [dispatch, currentOffers, currentSortType]);
 
   const offersEmpty = currentOffers.length < 1;
@@ -40,9 +38,9 @@ function OffersContainer(): JSX.Element {
 
       <div className={`cities__places-container ${offersEmpty ? 'cities__places-container--empty ' : ''}container`}>
 
-        {offersEmpty && <EmptySection cityName={selectedCityTab} />}
-
-        {!offersEmpty && <OfferList offers={sortedOffers} cityName={selectedCityTab} changeSortType={(e) => setSortType(e)} isAllowChangeActivePoint />}
+        {offersEmpty ?
+          <EmptySection cityName={currentCity} />
+          : <OfferList offers={sortedOffers} cityName={currentCity} changeSortType={(e) => setSortType(e)} isAllowChangeActivePoint />}
 
         <div className='cities__right-section'>
           {!offersEmpty && <Map containerClassNames='cities__map map' city={currentOffers[0].city} offers={currentOffers} />}
