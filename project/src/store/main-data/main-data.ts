@@ -12,7 +12,7 @@ const initialState: MainData = {
   activeOffer: undefined
 };
 
-export const offersData = createSlice({
+export const mainData = createSlice({
   name: NameSpace.MainData,
   initialState,
   reducers: {
@@ -41,4 +41,4 @@ export const offersData = createSlice({
   }
 });
 
-export const { setCity, setCurrentOffers, setActiveOffer } = offersData.actions;
+export const { setCity, setCurrentOffers, setActiveOffer } = mainData.actions;

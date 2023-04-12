@@ -44,3 +44,5 @@ export const getSortedReviews = (rawItems: Review[]): Review[] => {
 
   return items;
 };
+
+export const getClonedObject = (item: any) => JSON.parse(JSON.stringify(item));
