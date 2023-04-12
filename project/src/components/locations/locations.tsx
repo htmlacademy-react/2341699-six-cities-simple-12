@@ -9,7 +9,6 @@ function Locations(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  //const selectedCityTab = useAppSelector((state) => state[NameSpace.MainData].currentCity);
   const selectedCityTab = useAppSelector(getCurrentCity);
 
   const handleChangeCity = useCallback(

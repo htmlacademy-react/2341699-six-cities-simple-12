@@ -13,3 +13,5 @@ export const getReviews = (state: State): Review[] => state[NameSpace.PropertyDa
 export const getReviewsLoading = (state: State): boolean => state[NameSpace.PropertyData].reviewsLoading;
 
 export const getHasError404 = (state: State): boolean => state[NameSpace.PropertyData].hasError404;
+
+export const getCreateReviewLoading = (state: State): boolean => state[NameSpace.PropertyData].createReviewLoading;

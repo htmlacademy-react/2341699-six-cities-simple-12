@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { NameSpace, PageTitles } from '../../common/constants';
+import { PageTitles } from '../../common/constants';
 import Locations from '../../components/locations/locations';
 import OffersContainer from '../../components/offers-container/offers-container';
 import { useAppSelector } from '../../hooks';
+import { getCurrentOffers } from '../../store/main-data/selectors';
 
 function MainPage(): JSX.Element {
 
-  const currentOffers = useAppSelector((state) => state[NameSpace.MainData].currentOffers);
+  const currentOffers = useAppSelector(getCurrentOffers);
 
   useEffect(() => {
     document.title = PageTitles.Main;

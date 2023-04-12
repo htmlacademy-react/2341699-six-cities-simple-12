@@ -1,7 +1,7 @@
 import EmptySection from '../empty-section/empty-section';
 import OfferList from '../offer-list/offer-list';
 import Map from '../map/map';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { getCityOffers, getSortedOffers } from '../../common/utils';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { SortMenuItems } from '../../common/constants';
@@ -27,9 +27,9 @@ function OffersContainer(): JSX.Element {
   }, [dispatch, currentCity, offers]);
 
   // сортировка
-  useEffect(() => {
+  useMemo(() => {
     setSortedOffers(getSortedOffers(currentOffers, currentSortType));
-  }, [dispatch, currentOffers, currentSortType]);
+  }, [currentOffers, currentSortType]);
 
   const offersEmpty = currentOffers.length < 1;
 

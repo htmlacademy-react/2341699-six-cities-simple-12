@@ -12,7 +12,7 @@ function OfferCard({ item, isNearPlace, setActiveItem }: PlaceCardProps): JSX.El
 
   const ratingPercent = getRatingPercent(item.rating, true);
 
-  const offerUrl = `/offer/${item.id.toString()}`;
+  const offerUrl = `/offer/${item.id}`;
 
   return (
     <article className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>

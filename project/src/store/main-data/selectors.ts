@@ -9,3 +9,4 @@ export const getCurrentCity = (state: State): Cities => state[NameSpace.MainData
 
 export const getCurrentOffers = (state: State): Offer[] => state[NameSpace.MainData].currentOffers;
 
+export const getActiveOffer = (state: State): Offer | undefined => state[NameSpace.MainData].activeOffer;

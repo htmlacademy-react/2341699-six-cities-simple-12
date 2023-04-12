@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useCallback } from 'react';
 import { SortMenuItems } from '../../common/constants';
 import Offer from '../../types/offer';
 import OffersSortingMenu from '../offers-sorting-menu/offers-sorting-menu';
@@ -21,13 +21,13 @@ function OfferList(props: OfferListProps): JSX.Element {
   const { offers, cityName, isNearPlaces, isAllowChangeActivePoint } = props;
   const { changeSortType } = props;
 
-  const changeSelectedOffer = (item: Offer | undefined) => {
+  const changeSelectedOffer = useCallback((item: Offer | undefined) => {
     if (!isAllowChangeActivePoint) {
       return;
     }
 
     dispatch(setActiveOffer(item));
-  };
+  }, [dispatch, isAllowChangeActivePoint]);
 
   const offerCards = offers.map((item) => {
     const keyValue = `offer-${item.id}`;

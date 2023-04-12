@@ -1,7 +1,8 @@
-import { AuthorizationStatus, MAX_REVIEWS, NameSpace } from '../../common/constants';
+import { MAX_REVIEWS } from '../../common/constants';
 import { getSortedReviews } from '../../common/utils';
 import { useAppSelector } from '../../hooks';
 import { getReviews, getReviewsLoading } from '../../store/property-data/selectors';
+import { getUserIsAuthorized } from '../../store/user-process/selectors';
 import LoaderLine from '../loader-line/loader-line';
 import ReviewForm from '../review-form/review-form';
 import ReviewItem from '../review-item/review-item';
@@ -12,7 +13,7 @@ type ReviewListProps = {
 
 function ReviewList({ offerId }: ReviewListProps): JSX.Element {
 
-  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
+  const userIsAuthorized = useAppSelector(getUserIsAuthorized);
 
   const reviews = useAppSelector(getReviews);
   const reviewsLoading = useAppSelector(getReviewsLoading);
@@ -30,7 +31,7 @@ function ReviewList({ offerId }: ReviewListProps): JSX.Element {
         {reviewsLoading ? <LoaderLine /> : reviewItems}
       </ul>
 
-      {(authorizationStatus === AuthorizationStatus.Auth) && <ReviewForm offerId={offerId} />}
+      {userIsAuthorized && <ReviewForm offerId={offerId} />}
 
     </section>
   );
