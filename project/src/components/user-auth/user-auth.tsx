@@ -34,7 +34,7 @@ function UserProfile(): JSX.Element {
   return (
     <div className="header__nav-profile">
       <div className="header__avatar-wrapper user__avatar-wrapper">
-        {avatarUrl && <img src={avatarUrl} alt={email} />}
+        {avatarUrl && <img src={avatarUrl} alt={email} style={{ borderRadius: '10px' }} />}
       </div>
       <span className="header__user-name user__name">{email}</span>
     </div>
