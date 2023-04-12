@@ -15,7 +15,7 @@ export const getCapitalized = (value: string) => value.charAt(0).toUpperCase() +
 
 export const getCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => e.city.name === cityName);
 
-export function getSortedOffers(rawItems: Offer[], sortType: SortMenuItems): Offer[] {
+export const getSortedOffers = (rawItems: Offer[], sortType: SortMenuItems): Offer[] => {
 
   const items = rawItems.map((e) => e);
 
@@ -32,9 +32,9 @@ export function getSortedOffers(rawItems: Offer[], sortType: SortMenuItems): Off
   }
 
   return items;
-}
+};
 
-export function getSortedReviews(rawItems: Review[]): Review[] {
+export const getSortedReviews = (rawItems: Review[]): Review[] => {
 
   const items = rawItems.map((e) => e);
 
@@ -43,4 +43,4 @@ export function getSortedReviews(rawItems: Review[]): Review[] {
   }
 
   return items;
-}
+};
