@@ -1,15 +1,14 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus, NameSpace } from '../../common/constants';
+import { AppRoute } from '../../common/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { logoutAction } from '../../store/api-actions';
+import { getUserAvatarUrl, getUserEmail, getUserIsAuthorized } from '../../store/user-process/selectors';
 
 function UserAuth(): JSX.Element {
 
   const location = useLocation();
 
-  const authorizationStatus = useAppSelector((state) => state[NameSpace.User].authorizationStatus);
-
-  const isAuthorised = authorizationStatus === AuthorizationStatus.Auth;
+  const isAuthorised = useAppSelector(getUserIsAuthorized);
   const isLoginPage = location.pathname === AppRoute.Login;
 
   return (
@@ -29,13 +28,13 @@ export default UserAuth;
 
 function UserProfile(): JSX.Element {
 
-  const email = useAppSelector((state) => state[NameSpace.User].userProfile?.email);
-  const avatarUrl = useAppSelector((state) => state[NameSpace.User].userProfile?.avatarUrl);
+  const email = useAppSelector(getUserEmail);
+  const avatarUrl = useAppSelector(getUserAvatarUrl);
 
   return (
     <div className="header__nav-profile">
       <div className="header__avatar-wrapper user__avatar-wrapper">
-        {avatarUrl && <img src={avatarUrl} alt={email} />}
+        {avatarUrl && <img src={avatarUrl} alt={email} style={{ borderRadius: '10px' }} />}
       </div>
       <span className="header__user-name user__name">{email}</span>
     </div>

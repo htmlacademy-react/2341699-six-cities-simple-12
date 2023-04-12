@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { SortMenuItems } from '../../common/constants';
 
 type OffersSortingMenuProps = {
@@ -26,13 +26,13 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
     return () => document.body.removeEventListener('click', closeMenu);
   }, [menuShow]);
 
-  const handleChangeActiveItem = (newActiveItem: SortMenuItems) => {
+  const handleChangeActiveItem = useCallback((newActiveItem: SortMenuItems) => {
     setActiveItem(newActiveItem);
 
     if (changeSortType) {
       changeSortType(newActiveItem);
     }
-  };
+  }, [changeSortType]);
 
   const menuItems = Object.values(SortMenuItems).map((item, i) => (
     <li

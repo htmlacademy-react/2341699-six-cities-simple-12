@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Icon, Marker } from 'leaflet';
-import { NameSpace, URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
+import 'leaflet/dist/leaflet.css';
+import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
 import City from '../../types/city';
 import useMap from '../../hooks/useMap';
-import 'leaflet/dist/leaflet.css';
 import Offer from '../../types/offer';
 import { useAppSelector } from '../../hooks';
+import { getActiveOffer } from '../../store/main-data/selectors';
 
 type MapProps = {
   containerClassNames: string | undefined;
@@ -27,7 +28,7 @@ const currentCustomIcon = new Icon({
 
 function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
 
-  const activeOffer = useAppSelector((state) => state[NameSpace.MainData].activeOffer);
+  const activeOffer = useAppSelector(getActiveOffer);
 
   const mapRef = useRef(null);
   const [map, layerGroup] = useMap(mapRef, city);
@@ -52,20 +53,12 @@ function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
           .addTo(layerGroup);
       };
 
+      layerGroup.clearLayers();
+
       if (currentCity !== city) {
-
-        // если город уже был выбран, смещаем карту
-        if (currentCity) {
-          map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom, {
-            animate: true,
-            duration: 1
-          });
-        }
-
+        map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
         setCurrentCity(city);
       }
-
-      layerGroup.clearLayers();
 
       offers.forEach((offer) => {
         addMarker(offer);

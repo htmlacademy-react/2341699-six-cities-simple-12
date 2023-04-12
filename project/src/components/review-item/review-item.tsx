@@ -1,4 +1,4 @@
-import { GetRatingPercent } from '../../common/utils';
+import { getRatingPercent } from '../../common/utils';
 import Review from '../../types/review';
 
 type ReviewItemProps = {
@@ -7,7 +7,7 @@ type ReviewItemProps = {
 
 function ReviewItem({ item }: ReviewItemProps): JSX.Element {
 
-  const ratingPercent = GetRatingPercent(item.rating);
+  const ratingPercent = getRatingPercent(item.rating);
 
   const itemDate = new Date(item.date);
 

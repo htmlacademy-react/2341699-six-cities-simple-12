@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import Header from './header/header';
-import ScrollToTop from './scroll-to-top/scroll-to-top';
+import Header from '../header/header';
+import ScrollToTop from '../scroll-to-top/scroll-to-top';
 
 function Layout(): JSX.Element {
 

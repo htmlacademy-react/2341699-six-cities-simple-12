@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { GetRatingPercent } from '../../common/utils';
+import { getRatingPercent } from '../../common/utils';
 import Offer from '../../types/offer';
 
 type PlaceCardProps = {
@@ -10,9 +10,9 @@ type PlaceCardProps = {
 
 function OfferCard({ item, isNearPlace, setActiveItem }: PlaceCardProps): JSX.Element {
 
-  const ratingPercent = GetRatingPercent(item.rating, true);
+  const ratingPercent = getRatingPercent(item.rating, true);
 
-  const offerUrl = `/offer/${item.id.toString()}`;
+  const offerUrl = `/offer/${item.id}`;
 
   return (
     <article className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>

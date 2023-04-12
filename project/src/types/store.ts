@@ -11,16 +11,21 @@ export type UserProcess = {
 export type MainData = {
   currentCity: Cities;
   offers: Offer[];
+  offersLoading: boolean;
   currentOffers: Offer[];
-  sortedOffers: Offer[];
   activeOffer: Offer | undefined;
-  isOffersDataLoading: boolean;
 };
 
 export type PropertyData = {
   offersNearby: Offer[];
+  offersNearbyLoading: boolean;
+
   currentOffer: Offer | undefined;
+  currentOfferLoading: boolean;
+
   hasError404: boolean;
+
   reviews: Review[];
+  reviewsLoading: boolean;
   createReviewLoading: boolean;
 };

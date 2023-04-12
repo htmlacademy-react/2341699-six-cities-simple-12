@@ -1,20 +1,21 @@
 import Offer from '../types/offer';
+import Review from '../types/review';
 import { SortMenuItems } from './constants';
 
-export const GetRatingPercent = (value: number, round = false): string => {
+export const getRatingPercent = (value: number, round = false): string => {
   const result = (round ? Math.round(value) : value) / 0.05;
   return `${result}%`;
 };
 
-export function GetRandomArrayItem<T>(items: T[]) {
+export function getRandomArrayItem<T>(items: T[]) {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-export const Capitalized = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
+export const getCapitalized = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
-export const GetCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => e.city.name === cityName);
+export const getCityOffers = (cityName: string, items: Offer[]) => items.filter((e) => e.city.name === cityName);
 
-export function SortOffers(rawItems: Offer[], sortType: SortMenuItems): Offer[] {
+export const getSortedOffers = (rawItems: Offer[], sortType: SortMenuItems): Offer[] => {
 
   const items = rawItems.map((e) => e);
 
@@ -31,4 +32,15 @@ export function SortOffers(rawItems: Offer[], sortType: SortMenuItems): Offer[] 
   }
 
   return items;
-}
+};
+
+export const getSortedReviews = (rawItems: Review[]): Review[] => {
+
+  const items = rawItems.map((e) => e);
+
+  if (items.length > 1) {
+    items.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }
+
+  return items;
+};

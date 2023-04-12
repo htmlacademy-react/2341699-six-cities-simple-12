@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
-import { NameSpace } from '../../common/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addReviewAction } from '../../store/api-actions';
+import { getCreateReviewLoading } from '../../store/property-data/selectors';
 
 type ReviewFormProps = {
   offerId: number;
@@ -10,11 +10,11 @@ type ReviewFormProps = {
 function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
 
   const dispatch = useAppDispatch();
-  const createReviewLoading = useAppSelector((state) => state[NameSpace.PropertyData].createReviewLoading);
+  const createReviewLoading = useAppSelector(getCreateReviewLoading);
 
   const ratingArray = [5, 4, 3, 2, 1];
 
-  const [comment, setComment] = useState<string>();
+  const [comment, setComment] = useState<string>('');
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [submitActive, setSubmitActive] = useState(false);
 
@@ -32,7 +32,7 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
 
   // проверка условий ТЗ - выставлен рейтинг, комментарий в промежутке от 50 до 300 символов
   useEffect(() => {
-    setSubmitActive(comment !== undefined && rating !== undefined && comment.length >= 50 && comment.length <= 300 && rating > 0);
+    setSubmitActive(rating !== undefined && comment.length >= 50 && comment.length <= 300 && rating > 0);
   }, [comment, rating]);
 
   const handleChangeComment = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {

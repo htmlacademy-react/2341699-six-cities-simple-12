@@ -1,14 +1,15 @@
 import { useCallback } from 'react';
-import { Cities, NameSpace } from '../../common/constants';
+import { Cities } from '../../common/constants';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setCity } from '../../store/main-data/main-data';
+import { getCurrentCity } from '../../store/main-data/selectors';
 import LocationTabItem from '../location-tab-item/location-tab-item';
 
 function Locations(): JSX.Element {
 
   const dispatch = useAppDispatch();
 
-  const selectedCityTab = useAppSelector((state) => state[NameSpace.MainData].currentCity);
+  const selectedCityTab = useAppSelector(getCurrentCity);
 
   const handleChangeCity = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, city: Cities) => {
