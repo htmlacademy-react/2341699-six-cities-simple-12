@@ -1,6 +1,6 @@
 import { datatype, helpers, image, internet } from 'faker';
 import Offer from '../types/offer';
-import Review from '../types/review';
+import Review, { NewReview } from '../types/review';
 import { UserData } from '../types/user-data';
 import { Cities } from './constants';
 
@@ -38,7 +38,7 @@ export const makeFakeOffer = (): Offer => ({
     location: {
       latitude: datatype.float(),
       longitude: datatype.float(),
-      zoom: datatype.number(13),
+      zoom: helpers.randomize([10, 13, 16]),
     },
     name: helpers.randomize(Object.values(Cities))
   },
@@ -49,7 +49,7 @@ export const makeFakeOffer = (): Offer => ({
 
   price: datatype.number(999),
 
-  rating: datatype.float(5),
+  rating: helpers.randomize([1, 2, 3, 4, 5]),
 
   title: datatype.string(),
 
@@ -58,21 +58,27 @@ export const makeFakeOffer = (): Offer => ({
   location: {
     latitude: datatype.float(),
     longitude: datatype.float(),
-    zoom: datatype.number(13),
+    zoom: helpers.randomize([10, 13, 16]),
   },
 });
 
 export const makeFakeReviews = (): Review[] => datatype.array(3).map(() => makeFakeReview());
 
 export const makeFakeReview = (): Review => ({
-  comment: datatype.string(),
+  comment: datatype.string(50),
   date: datatype.datetime().toString(),
   id: datatype.number(),
-  rating: datatype.float(5),
+  rating: helpers.randomize([1, 2, 3, 4, 5]),
   user: {
     avatarUrl: internet.avatar(),
     id: datatype.number(),
     isPro: datatype.boolean(),
     name: internet.userName(),
   }
+});
+
+export const makeFakeNewReview = (): NewReview => ({
+  offerId: 1,
+  comment: datatype.string(50),
+  rating: helpers.randomize([1, 2, 3, 4, 5]),
 });
