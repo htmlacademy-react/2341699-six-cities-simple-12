@@ -28,7 +28,7 @@ describe('Reducer: main-data', () => {
 
     const fakeOffers = makeFakeOffers();
 
-    let expectedState = getClonedObject(state) as MainData;
+    const expectedState = getClonedObject<MainData>(state);
 
     expectedState.offersLoading = true;
     expect(mainData.reducer(state, { type: fetchOffersAction.pending.type }))
@@ -45,7 +45,7 @@ describe('Reducer: main-data', () => {
 
   it('should update currentCity by Cities', () => {
 
-    let expectedState = getClonedObject(state) as MainData;
+    const expectedState = getClonedObject<MainData>(state);
 
     expectedState.currentCity = Cities.Amsterdam;
     expect(mainData.reducer(state, { type: setCity.type, payload: Cities.Amsterdam }))
@@ -57,7 +57,7 @@ describe('Reducer: main-data', () => {
 
     const fakeOffers = makeFakeOffers();
 
-    let expectedState = getClonedObject(state) as MainData;
+    const expectedState = getClonedObject<MainData>(state);
 
     expectedState.currentOffers = fakeOffers;
     expect(mainData.reducer(state, { type: setCurrentOffers.type, payload: fakeOffers }))
@@ -69,7 +69,7 @@ describe('Reducer: main-data', () => {
 
     const fakeOffer = makeFakeOffer();
 
-    let expectedState = getClonedObject(state) as MainData;
+    const expectedState = getClonedObject<MainData>(state);
 
     expectedState.activeOffer = fakeOffer;
     expect(mainData.reducer(state, { type: setActiveOffer.type, payload: fakeOffer }))

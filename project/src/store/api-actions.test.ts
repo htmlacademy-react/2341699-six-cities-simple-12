@@ -2,23 +2,24 @@ import { Action } from '@reduxjs/toolkit';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
 import { configureMockStore } from '@jedmao/redux-mock-store';
-import { createAPI } from "../services/api";
+import { createAPI } from '../services/api';
 import { State } from '../types/state';
 import { APIRoute } from '../common/constants';
 import { addReviewAction, checkAuthAction, fetchOfferAction, fetchOffersAction, fetchOffersNearbyAction, fetchReviewsAction, loginAction, logoutAction } from './api-actions';
 import { AuthData } from '../types/auth-data';
 import { makeFakeNewReview, makeFakeOffer, makeFakeOffers, makeFakeOffersNearby, makeFakeReviews } from '../common/mocks';
 
-describe('Async actions', () => {
-  const api = createAPI();
-  const mockAPI = new MockAdapter(api);
-  const middlewares = [thunk.withExtraArgument(api)];
+const api = createAPI();
+const mockAPI = new MockAdapter(api);
+const middlewares = [thunk.withExtraArgument(api)];
 
-  const mockStore = configureMockStore<
-    State,
-    Action<string>,
-    ThunkDispatch<State, typeof api, Action>
-  >(middlewares);
+const mockStore = configureMockStore<
+  State,
+  Action<string>,
+  ThunkDispatch<State, typeof api, Action>
+>(middlewares);
+
+describe('Async actions', () => {
 
   it('should authorization status is «auth» when server return 200', async () => {
     const store = mockStore();
@@ -188,7 +189,7 @@ describe('Async actions', () => {
     const fakeNewReview = makeFakeNewReview();
     const fakeReviews = makeFakeReviews();
 
-    const url = `${APIRoute.Comments}/${fakeNewReview.offerId}`
+    const url = `${APIRoute.Comments}/${fakeNewReview.offerId}`;
 
     mockAPI
       .onPost(url)

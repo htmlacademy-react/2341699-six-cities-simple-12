@@ -67,8 +67,8 @@ function PropertyPage(): JSX.Element {
       <section className="property">
         <div className="property__gallery-container container">
           <div className="property__gallery">
-            {randomImages.map((imageUrl) => (
-              <div key={imageUrl} className="property__image-wrapper">
+            {randomImages.map((imageUrl, i) => (
+              <div key={`image_${String(i)}`} className="property__image-wrapper">
                 <img className="property__image" src={imageUrl} alt={offer.type} />
               </div>
             ))}

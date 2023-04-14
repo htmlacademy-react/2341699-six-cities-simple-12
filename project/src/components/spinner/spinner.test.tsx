@@ -1,9 +1,9 @@
-import { render } from "@testing-library/react";
-import Spinner from "./spinner";
+import { render, screen } from '@testing-library/react';
+import Spinner from './spinner';
 
 describe('Component: Spinner', () => {
   it('should render correctly', () => {
-    const { container } = render(<Spinner />);
-    expect(container.getElementsByClassName('spinner-wrapper').length).toBe(1);
+    render(<Spinner />);
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 });

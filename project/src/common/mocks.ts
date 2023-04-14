@@ -25,7 +25,7 @@ export const makeFakeOffer = (): Offer => ({
     name: internet.userName(),
   },
 
-  images: datatype.array(6).map(() => image.imageUrl()),
+  images: datatype.array(6).map(() => image.imageUrl(1234, 2345, 'cat', true)),
 
   description: datatype.string(),
 
@@ -45,7 +45,7 @@ export const makeFakeOffer = (): Offer => ({
 
   isPremium: datatype.boolean(),
 
-  previewImage: image.imageUrl(),
+  previewImage: image.imageUrl(1234, 2345, 'cat', true),
 
   price: datatype.number(999),
 

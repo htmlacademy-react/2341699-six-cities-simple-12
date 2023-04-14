@@ -1,8 +1,8 @@
-import { AuthorizationStatus, AUTH_TOKEN_KEY_NAME } from "../../common/constants";
-import { makeFakeUserData } from "../../common/mocks";
-import { UserProcess } from "../../types/store";
-import { checkAuthAction, loginAction, logoutAction } from "../api-actions";
-import { userProcess } from "./user-process";
+import { AuthorizationStatus, AUTH_TOKEN_KEY_NAME } from '../../common/constants';
+import { makeFakeUserData } from '../../common/mocks';
+import { UserProcess } from '../../types/store';
+import { checkAuthAction, loginAction, logoutAction } from '../api-actions';
+import { userProcess } from './user-process';
 
 describe('Reducer: user-process', () => {
 

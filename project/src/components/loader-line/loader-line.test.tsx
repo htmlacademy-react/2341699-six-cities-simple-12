@@ -1,9 +1,9 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import LoaderLine from './loader-line';
 
 describe('Component: LoaderLine', () => {
   it('should render correctly', () => {
-    const { container } = render(<LoaderLine />);
-    expect(container.getElementsByClassName('loader-line').length).toBe(1);
+    render(<LoaderLine />);
+    expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 });
