@@ -37,11 +37,11 @@ function PropertyPage(): JSX.Element {
   }, [offerId, dispatch]);
 
   useEffect(() => {
-    if (!offer) { return; }
+    if (!offer || offerId !== offer.id) { return; }
     dispatch(fetchOffersNearbyAction(offer.id));
     dispatch(fetchReviewsAction(offer.id));
     dispatch(setActiveOffer(offer));
-  }, [dispatch, offer]);
+  }, [dispatch, offer, offerId]);
 
   if (!offerLoading && (isNaN(offerId) || hasError404)) {
     return (<Navigate to={AppRoute.Erorr404} replace />);

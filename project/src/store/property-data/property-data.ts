@@ -30,6 +30,8 @@ export const propertyData = createSlice({
       .addCase(fetchOfferAction.pending, (state) => {
         state.hasError404 = false;
         state.currentOffer = undefined;
+        state.reviews = [];
+        state.offersNearby = [];
         state.currentOfferLoading = true;
       })
       .addCase(fetchOfferAction.fulfilled, (state, action) => {
