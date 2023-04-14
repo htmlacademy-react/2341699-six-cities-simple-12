@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { AppRoute } from '../../common/constants';
 import Layout from '../layout/layout';
 import Main from '../../pages/main-page/main-page';
@@ -19,19 +19,17 @@ function App(): JSX.Element {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path={AppRoute.Main} element={<Layout />}>
-          <Route index element={<Main />} />
-          <Route path={AppRoute.Login} element={<LoginPage />} />
+    <Routes>
+      <Route path={AppRoute.Main} element={<Layout />}>
+        <Route index element={<Main />} />
+        <Route path={AppRoute.Login} element={<LoginPage />} />
 
-          <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage />} />
+        <Route path={`${AppRoute.Room}/:id`} element={<PropertyPage />} />
 
-          <Route path={AppRoute.Erorr404} element={<NotFoundPage />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+        <Route path={AppRoute.Erorr404} element={<NotFoundPage />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
   );
 }
 
