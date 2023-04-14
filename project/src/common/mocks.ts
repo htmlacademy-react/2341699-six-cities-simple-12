@@ -1,4 +1,5 @@
 import { datatype, helpers, image, internet } from 'faker';
+import City from '../types/city';
 import Offer from '../types/offer';
 import Review, { NewReview } from '../types/review';
 import { UserData } from '../types/user-data';
@@ -34,14 +35,7 @@ export const makeFakeOffer = (): Offer => ({
   bedrooms: datatype.number(6),
   maxAdults: datatype.number(6),
 
-  city: {
-    location: {
-      latitude: datatype.float(),
-      longitude: datatype.float(),
-      zoom: helpers.randomize([10, 13, 16]),
-    },
-    name: helpers.randomize(Object.values(Cities))
-  },
+  city: makeFakeCity(),
 
   isPremium: datatype.boolean(),
 
@@ -81,4 +75,13 @@ export const makeFakeNewReview = (): NewReview => ({
   offerId: 1,
   comment: datatype.string(50),
   rating: helpers.randomize([1, 2, 3, 4, 5]),
+});
+
+export const makeFakeCity = (): City => ({
+  location: {
+    latitude: datatype.float(),
+    longitude: datatype.float(),
+    zoom: helpers.randomize([10, 13, 16]),
+  },
+  name: helpers.randomize(Object.values(Cities))
 });
