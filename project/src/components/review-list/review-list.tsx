@@ -1,7 +1,5 @@
-import { MAX_REVIEWS } from '../../common/constants';
-import { getSortedReviews } from '../../common/utils';
 import { useAppSelector } from '../../hooks';
-import { getReviews, getReviewsLoading } from '../../store/property-data/selectors';
+import { getReviews, getReviewsLoading, getSortedAndSplicedReviews } from '../../store/property-data/selectors';
 import { getUserIsAuthorized } from '../../store/user-process/selectors';
 import LoaderLine from '../loader-line/loader-line';
 import ReviewForm from '../review-form/review-form';
@@ -17,9 +15,9 @@ function ReviewList({ offerId }: ReviewListProps): JSX.Element {
 
   const reviews = useAppSelector(getReviews);
   const reviewsLoading = useAppSelector(getReviewsLoading);
+  const sortedAndSplicedReviews = useAppSelector(getSortedAndSplicedReviews);
 
-  const reviewItems = getSortedReviews(reviews)
-    .slice(0, reviews.length > MAX_REVIEWS ? MAX_REVIEWS : reviews.length)
+  const reviewItems = sortedAndSplicedReviews
     .map((item) => <ReviewItem key={`review-${item.id}`} item={item} />);
 
   return (
