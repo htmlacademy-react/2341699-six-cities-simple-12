@@ -5,17 +5,17 @@ import Offer from '../../types/offer';
 type PlaceCardProps = {
   item: Offer;
   isNearPlace?: boolean;
-  setActiveItem: (item?: Offer) => void;
+  onChangeActiveOffer: (item?: Offer) => void;
 };
 
-function OfferCard({ item, isNearPlace, setActiveItem }: PlaceCardProps): JSX.Element {
+function OfferCard({ item, isNearPlace, onChangeActiveOffer }: PlaceCardProps): JSX.Element {
 
   const ratingPercent = getRatingPercent(item.rating, true);
 
   const offerUrl = `/offer/${item.id}`;
 
   return (
-    <article role="listitem" aria-label="place-card" className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>
+    <article role="listitem" aria-label="place-card" className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => onChangeActiveOffer(item)} onMouseLeave={() => onChangeActiveOffer()}>
 
       {item.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
 

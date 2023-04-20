@@ -11,7 +11,7 @@ describe('Component: OffersSortingMenu', () => {
 
     const handleChangeSortType = jest.fn();
 
-    render(<OffersSortingMenu changeSortType={handleChangeSortType} />);
+    render(<OffersSortingMenu onChangeSortType={handleChangeSortType} />);
 
     const listItems = screen.getAllByRole('listitem');
     const menuButton = screen.getByRole('button');

@@ -14,7 +14,7 @@ describe('Component: LocationTabItem', () => {
       <LocationTabItem
         city={fakeCity}
         isActive
-        changeCurrentLocation={fakeChangeCurrentLocation}
+        onChangeCurrentLocation={fakeChangeCurrentLocation}
       />
     );
 
@@ -37,7 +37,7 @@ describe('Component: LocationTabItem', () => {
       <LocationTabItem
         city={fakeCity}
         isActive={false}
-        changeCurrentLocation={fakeChangeCurrentLocation}
+        onChangeCurrentLocation={fakeChangeCurrentLocation}
       />
     );
 

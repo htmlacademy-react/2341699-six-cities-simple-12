@@ -11,7 +11,7 @@ type OfferListProps = {
   cityName?: string;
   isNearPlaces?: boolean;
   isAllowChangeActivePoint?: boolean;
-  changeSortType?: (sortType: SortMenuItems) => void;
+  onChangeSortType?: (sortType: SortMenuItems) => void;
 };
 
 function OfferList(props: OfferListProps): JSX.Element {
@@ -19,9 +19,9 @@ function OfferList(props: OfferListProps): JSX.Element {
   const dispatch = useAppDispatch();
 
   const { offers, cityName, isNearPlaces, isAllowChangeActivePoint } = props;
-  const { changeSortType } = props;
+  const { onChangeSortType } = props;
 
-  const changeActiveOffer = useCallback((item: Offer | undefined) => {
+  const handleChangeActiveOffer = useCallback((item: Offer | undefined) => {
     if (!isAllowChangeActivePoint) {
       return;
     }
@@ -31,7 +31,7 @@ function OfferList(props: OfferListProps): JSX.Element {
 
   const offerCards = offers.map((item) => {
     const keyValue = `offer-${item.id}`;
-    return <OfferCard key={keyValue} item={item} setActiveItem={(e) => changeActiveOffer(e)} />;
+    return <OfferCard key={keyValue} item={item} onChangeActiveOffer={(e) => handleChangeActiveOffer(e)} />;
   });
 
   const mainClass = isNearPlaces ? 'near-places' : 'cities__places';
@@ -44,7 +44,7 @@ function OfferList(props: OfferListProps): JSX.Element {
         <Fragment>
           <h2 className="visually-hidden">Places</h2>
           <b className="places__found">{offers.length} places to stay in {cityName}</b>
-          {changeSortType && <OffersSortingMenu changeSortType={changeSortType} />}
+          {onChangeSortType && <OffersSortingMenu onChangeSortType={onChangeSortType} />}
         </Fragment>
       )}
 

@@ -11,13 +11,13 @@ const history = createMemoryHistory({ initialEntries: ['/'] });
 
 describe('Component: OfferCard', () => {
 
-  it('should render correctly', () => {
+  it('should render correctly', async () => {
 
-    const handleSetActiveItem = jest.fn();
+    const handleChangeActiveOffer = jest.fn();
 
     render(
       <Router location={history.location} navigator={history}>
-        <OfferCard item={fakeOffer} setActiveItem={handleSetActiveItem} />
+        <OfferCard item={fakeOffer} onChangeActiveOffer={handleChangeActiveOffer} />
       </Router>
     );
 
@@ -25,36 +25,15 @@ describe('Component: OfferCard', () => {
     expect(screen.getByText(fakeOffer.type)).toBeInTheDocument();
 
     expect(screen.getByAltText('Place')).toBeInTheDocument();
-  });
 
-  it('should set active offer after mouse enter', async () => {
-
-    const handleSetActiveItem = jest.fn();
-
-    render(
-      <Router location={history.location} navigator={history}>
-        <OfferCard item={fakeOffer} setActiveItem={handleSetActiveItem} />
-      </Router>
-    );
-
+    // наводим мышкой
     await userEvent.hover(screen.getByRole('listitem', { name: 'place-card' }));
+    expect(handleChangeActiveOffer).toBeCalledTimes(1);
 
-    expect(handleSetActiveItem).toBeCalledTimes(1);
-  });
-
-  it('should redirect to offer after click', async () => {
-
-    const handleSetActiveItem = jest.fn();
-
-    render(
-      <Router location={history.location} navigator={history}>
-        <OfferCard item={fakeOffer} setActiveItem={handleSetActiveItem} />
-      </Router>
-    );
-
+    // кликаем по ссылке
     await userEvent.click(screen.getAllByRole('link')[0]);
-
     expect(history.location.pathname).toBe(`/offer/${fakeOffer.id}`);
+
   });
 
 });
