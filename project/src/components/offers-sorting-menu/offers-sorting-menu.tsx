@@ -28,10 +28,7 @@ function OffersSortingMenu({ onChangeSortType }: OffersSortingMenuProps): JSX.El
 
   const handleChangeActiveItem = useCallback((newActiveItem: SortMenuItems) => {
     setActiveItem(newActiveItem);
-
-    if (onChangeSortType) {
-      onChangeSortType(newActiveItem);
-    }
+    onChangeSortType(newActiveItem);
   }, [onChangeSortType]);
 
   const menuItems = Object.values(SortMenuItems).map((item, i) => (
