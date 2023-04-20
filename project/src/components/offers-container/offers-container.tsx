@@ -40,7 +40,7 @@ function OffersContainer(): JSX.Element {
 
         {offersEmpty ?
           <EmptySection cityName={currentCity} />
-          : <OfferList offers={sortedOffers} cityName={currentCity} changeSortType={(e) => setSortType(e)} isAllowChangeActivePoint />}
+          : <OfferList offers={sortedOffers} cityName={currentCity} onChangeSortType={(e) => setSortType(e)} isAllowChangeActivePoint />}
 
         <div className='cities__right-section'>
           {!offersEmpty && <Map containerClassNames='cities__map map' city={currentOffers[0].city} offers={currentOffers} />}

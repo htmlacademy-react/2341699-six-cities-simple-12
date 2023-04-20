@@ -1,4 +1,3 @@
-
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Cities } from '../../common/constants';
@@ -15,7 +14,7 @@ describe('Component: LocationTabItem', () => {
       <LocationTabItem
         city={fakeCity}
         isActive
-        changeCurrentLocation={fakeChangeCurrentLocation}
+        onChangeCurrentLocation={fakeChangeCurrentLocation}
       />
     );
 
@@ -38,7 +37,7 @@ describe('Component: LocationTabItem', () => {
       <LocationTabItem
         city={fakeCity}
         isActive={false}
-        changeCurrentLocation={fakeChangeCurrentLocation}
+        onChangeCurrentLocation={fakeChangeCurrentLocation}
       />
     );
 

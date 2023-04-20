@@ -2,7 +2,7 @@ import { makeFakeOffer, makeFakeOffersNearby, makeFakeReviews } from '../../comm
 import { getClonedObject } from '../../common/utils';
 import { PropertyData } from '../../types/store';
 import { addReviewAction, fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../api-actions';
-import { propertyData, setHasError404 } from './property-data';
+import { propertyData } from './property-data';
 
 describe('Reducer: property-data', () => {
 
@@ -39,6 +39,10 @@ describe('Reducer: property-data', () => {
       .toEqual(expectedState);
 
     expectedState.offersNearbyLoading = false;
+    expect(propertyData.reducer(state, { type: fetchOffersNearbyAction.rejected.type }))
+      .toEqual(expectedState);
+
+    expectedState.offersNearbyLoading = false;
     expectedState.offersNearby = fakeOffersNearby;
     expect(propertyData.reducer(state, { type: fetchOffersNearbyAction.fulfilled.type, payload: fakeOffersNearby }))
       .toEqual(expectedState);
@@ -69,6 +73,9 @@ describe('Reducer: property-data', () => {
       .toEqual(expectedState);
 
     expectedState.reviewsLoading = false;
+    expect(propertyData.reducer(state, { type: fetchReviewsAction.rejected.type }))
+      .toEqual(expectedState);
+
     expectedState.reviews = fakeReviews;
     expect(propertyData.reducer(state, { type: fetchReviewsAction.fulfilled.type, payload: fakeReviews }))
       .toEqual(expectedState);
@@ -84,19 +91,13 @@ describe('Reducer: property-data', () => {
       .toEqual(expectedState);
 
     expectedState.createReviewLoading = false;
+    expect(propertyData.reducer(state, { type: addReviewAction.rejected.type }))
+      .toEqual(expectedState);
+
     expectedState.reviews = fakeReviews;
     expect(propertyData.reducer(state, { type: addReviewAction.fulfilled.type, payload: fakeReviews }))
       .toEqual(expectedState);
 
-  });
-
-  it('should update hasError404 by error load current offer', () => {
-
-    const expectedState = getClonedObject<PropertyData>(state);
-
-    expectedState.hasError404 = true;
-    expect(propertyData.reducer(state, { type: setHasError404.type, payload: true }))
-      .toEqual(expectedState);
 
   });
 

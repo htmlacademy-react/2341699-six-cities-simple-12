@@ -28,7 +28,7 @@ function Locations(): JSX.Element {
               city={city}
               key={city}
               isActive={selectedCityTab === city}
-              changeCurrentLocation={handleChangeCity}
+              onChangeCurrentLocation={handleChangeCity}
             />))}
         </ul>
       </section>
