@@ -4,12 +4,12 @@ import { Provider } from 'react-redux';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { createMemoryHistory } from 'history';
 import { AppRoute, AuthorizationStatus, Cities } from '../../common/constants';
-import App from './app';
 import HistoryRouter from '../history-route/history-route';
+import { Action } from '@reduxjs/toolkit';
 import { makeFakeOffer } from '../../common/mocks';
 import { createAPI } from '../../services/api';
 import { State } from '../../types/state';
-import { Action } from '@reduxjs/toolkit';
+import App from './app';
 
 const api = createAPI();
 const middlewares = [thunk.withExtraArgument(api)];

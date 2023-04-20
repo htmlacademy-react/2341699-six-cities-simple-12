@@ -72,7 +72,7 @@ function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
   }, [map, layerGroup, offers, activeOffer, city, currentCity]);
 
   return (
-    <section className={containerClassNames} ref={mapRef} />
+    <section role="application" className={containerClassNames} ref={mapRef} />
   );
 }
 

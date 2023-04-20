@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import * as yup from 'yup';
@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-actions';
 import { setCity } from '../../store/main-data/main-data';
 import { getUserIsAuthorized } from '../../store/user-process/selectors';
-import { AuthData } from '../../types/auth-data';
 
 const authDataShema = yup.object({
   email: yup.string()
@@ -31,23 +30,25 @@ function LoginPage(): JSX.Element {
 
   const [randomCity,] = useState(getRandomArrayItem<Cities>(Object.values(Cities)));
 
-  const [formData, setFormData] = useState<AuthData>({
-    email: '',
-    password: ''
-  });
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
 
   // если пользователь авторизован, редирект на главную
   if (userIsAuthorized) {
     return (<Navigate to={AppRoute.Main} replace />);
   }
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    setFormData({ ...formData, [name]: value });
-  };
-
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();
+
+    if (!emailRef || !emailRef.current || !passwordRef || !passwordRef.current) {
+      return;
+    }
+
+    const formData = {
+      email: emailRef.current.value,
+      password: passwordRef.current.value
+    };
 
     authDataShema
       .validate(formData)
@@ -73,11 +74,11 @@ function LoginPage(): JSX.Element {
           <form className="login__form form" action="#" method="post">
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">E-mail</label>
-              <input className="login__input form__input" type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} />
+              <input aria-label="email" className="login__input form__input" type="email" name="email" placeholder="Email" ref={emailRef} />
             </div>
             <div className="login__input-wrapper form__input-wrapper">
               <label className="visually-hidden">Password</label>
-              <input className="login__input form__input" type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} />
+              <input aria-label="password" className="login__input form__input" type="password" name="password" placeholder="Password" ref={passwordRef} />
             </div>
             <button className="login__submit form__submit button" type="submit" onClick={handleSubmit}>Sign in</button>
           </form>

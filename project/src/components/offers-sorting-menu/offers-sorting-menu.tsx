@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { SortMenuItems } from '../../common/constants';
 
 type OffersSortingMenuProps = {
-  changeSortType?: (sortType: SortMenuItems) => void;
+  changeSortType: (sortType: SortMenuItems) => void;
 };
 
 function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Element {
@@ -47,14 +47,14 @@ function OffersSortingMenu({ changeSortType }: OffersSortingMenuProps): JSX.Elem
   return (
     <form className="places__sorting" action="#" method="get" >
       <span className="places__sorting-caption">Sort by &nbsp;</span>
-      <span className="places__sorting-type" tabIndex={0} onClick={() => setMenuShow(!menuShow)} ref={sortMenuButtonRef}>
+      <span role="button" className="places__sorting-type" tabIndex={0} onClick={() => setMenuShow(!menuShow)} ref={sortMenuButtonRef}>
         {activeItem}
         <svg className="places__sorting-arrow" width="7" height="4">
           <use xlinkHref="#icon-arrow-select"></use>
         </svg>
       </span>
 
-      <ul className={`places__options places__options--custom ${menuShow ? 'places__options--opened' : ''}`}>
+      <ul role="menu" className={`places__options places__options--custom ${menuShow ? 'places__options--opened' : ''}`}>
         {menuItems}
       </ul>
 
