@@ -111,7 +111,7 @@ function PropertyPage(): JSX.Element {
             <div className="property__inside">
               <h2 className="property__inside-title">What&apos;s inside</h2>
               <ul className="property__inside-list">
-                {offer.goods.map((goodName) => <li key={goodName} className='property__inside-item'>{goodName}</li>)}
+                {offer.goods.map((goodName, i) => <li key={`goodName_${String(i)}`} className='property__inside-item'>{goodName}</li>)}
               </ul>
             </div>
             <div className="property__host">
@@ -128,7 +128,7 @@ function PropertyPage(): JSX.Element {
 
               </div>
               <div className="property__description">
-                {descriptionItems.map((text) => <p key={text} className="property__text">{text}</p>)}
+                {descriptionItems.map((text, i) => <p key={`text_${String(i)}`} className="property__text">{text}</p>)}
               </div>
             </div>
 

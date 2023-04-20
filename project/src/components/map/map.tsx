@@ -3,7 +3,7 @@ import { Icon, Marker } from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { URL_MARKER_CURRENT, URL_MARKER_DEFAULT } from '../../common/constants';
 import City from '../../types/city';
-import useMap from '../../hooks/useMap';
+import useMap from '../../hooks/use-map';
 import Offer from '../../types/offer';
 import { useAppSelector } from '../../hooks';
 import { getActiveOffer } from '../../store/main-data/selectors';
@@ -72,7 +72,7 @@ function Map({ containerClassNames, city, offers }: MapProps): JSX.Element {
   }, [map, layerGroup, offers, activeOffer, city, currentCity]);
 
   return (
-    <section className={containerClassNames} ref={mapRef} />
+    <section role="application" className={containerClassNames} ref={mapRef} />
   );
 }
 

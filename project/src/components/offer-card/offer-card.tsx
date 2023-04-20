@@ -15,7 +15,7 @@ function OfferCard({ item, isNearPlace, setActiveItem }: PlaceCardProps): JSX.El
   const offerUrl = `/offer/${item.id}`;
 
   return (
-    <article className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>
+    <article role="listitem" aria-label="place-card" className={`${(isNearPlace ? 'near-places__card' : 'cities__card')} place-card`} onMouseEnter={() => setActiveItem(item)} onMouseLeave={() => setActiveItem()}>
 
       {item.isPremium && <div className="place-card__mark"><span>Premium</span></div>}
 

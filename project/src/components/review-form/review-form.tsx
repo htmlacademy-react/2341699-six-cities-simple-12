@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { addReviewAction } from '../../store/api-actions';
 import { getCreateReviewLoading } from '../../store/property-data/selectors';
@@ -14,7 +14,8 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
 
   const ratingArray = [5, 4, 3, 2, 1];
 
-  const [comment, setComment] = useState<string>('');
+  const commentRef = useRef<HTMLTextAreaElement | null>(null);
+
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [submitActive, setSubmitActive] = useState(false);
 
@@ -27,22 +28,44 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
     }
 
     setRating(undefined);
-    setComment('');
+
+    if (!commentRef || !commentRef.current) {
+      return;
+    }
+
+    commentRef.current.value = '';
   };
 
   // проверка условий ТЗ - выставлен рейтинг, комментарий в промежутке от 50 до 300 символов
-  useEffect(() => {
+  const checkSubmitAllow = useCallback(() => {
+    if (!commentRef || !commentRef.current) {
+      setSubmitActive(false);
+      return;
+    }
+
+    const comment = commentRef.current.value;
+
     setSubmitActive(rating !== undefined && comment.length >= 50 && comment.length <= 300 && rating > 0);
-  }, [comment, rating]);
+  }, [rating]);
+
+  useEffect(() => {
+    checkSubmitAllow();
+  }, [rating, checkSubmitAllow]);
 
   const handleChangeComment = ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComment(target.value);
+    checkSubmitAllow();
   };
 
   const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // отправка формы в разработке
+    if (!commentRef || !commentRef.current) {
+      return;
+    }
+
+    const comment = commentRef.current.value;
+
+    // отправка формы
     if (comment && rating) {
       dispatch(addReviewAction({
         offerId: offerId,
@@ -50,7 +73,7 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
         rating: rating
       }))
         .then((result) => {
-          // странная шляпа
+          // промис выполнился, очищаем форму
           if (result.meta.requestStatus === 'fulfilled') {
             clearForm();
           }
@@ -59,12 +82,13 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
   };
 
   return (
-    <form className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
+    <form name="comment-form" className="reviews__form form" action="#" method="post" onSubmit={handleFormSubmit}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
       <div className="reviews__rating-form form__rating">
         {ratingArray.map((r) => (
           <Fragment key={r}>
             <input
+              aria-label='review-star'
               className="form__rating-input visually-hidden"
               name="rating"
               value={r}
@@ -84,17 +108,20 @@ function ReviewForm({ offerId }: ReviewFormProps): JSX.Element {
         className="reviews__textarea form__textarea"
         id="review"
         name="review"
+        aria-label='review-textarea'
         placeholder="Tell how was your stay, what you like and what can be improved"
-        value={comment}
         onChange={handleChangeComment}
         disabled={createReviewLoading}
+        maxLength={300}
+        minLength={50}
+        ref={commentRef}
       >
       </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
           To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled={!submitActive || createReviewLoading}>Submit</button>
+        <button aria-label='review-button' className="reviews__submit form__submit button" type="submit" disabled={!submitActive || createReviewLoading}>Submit</button>
       </div>
     </form>
   );

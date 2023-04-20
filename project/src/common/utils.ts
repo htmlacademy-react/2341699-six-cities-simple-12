@@ -48,3 +48,12 @@ export const getSortedReviews = (rawItems: Review[]): Review[] => {
 export function getClonedObject<T>(item: T) {
   return JSON.parse(JSON.stringify(item)) as T;
 }
+
+export const getReviewTime = (date: string): string => {
+
+  const itemDate = new Date(date);
+
+  const monthName = itemDate.toLocaleString('en-EN', { month: 'long' });
+
+  return `${monthName} ${itemDate.getFullYear()}`;
+};
