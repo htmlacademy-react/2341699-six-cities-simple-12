@@ -1,13 +1,11 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios, { AxiosInstance } from 'axios';
-import { StatusCodes } from 'http-status-codes';
+import { AxiosInstance } from 'axios';
 import { APIRoute } from '../common/constants';
 import { AuthData } from '../types/auth-data';
 import Offer, { Offers } from '../types/offer';
 import Review, { NewReview } from '../types/review';
 import { AppDispatch, State } from '../types/state';
 import { UserData } from '../types/user-data';
-import { setHasError404 } from './property-data/property-data';
 
 export const checkAuthAction = createAsyncThunk<UserData, undefined, {
   dispatch: AppDispatch;
@@ -63,18 +61,8 @@ export const fetchOfferAction = createAsyncThunk<Offer | undefined, number, {
 }>(
   'data/fetchOffer',
   async (id, { dispatch, extra: api }) => {
-    try {
-      const { data } = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
-      return data;
-    }
-    catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === StatusCodes.NOT_FOUND) {
-          dispatch(setHasError404(true));
-        }
-      }
-      throw error;
-    }
+    const { data } = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+    return data;
   },
 );
 

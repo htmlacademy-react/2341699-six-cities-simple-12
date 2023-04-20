@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../common/constants';
 import { PropertyData } from '../../types/store';
 import { addReviewAction, fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction } from '../api-actions';
@@ -20,11 +20,7 @@ const initialState: PropertyData = {
 export const propertyData = createSlice({
   name: NameSpace.PropertyData,
   initialState,
-  reducers: {
-    setHasError404: (state, action: PayloadAction<boolean>) => {
-      state.hasError404 = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder
       .addCase(fetchOfferAction.pending, (state) => {
@@ -38,12 +34,19 @@ export const propertyData = createSlice({
         state.currentOffer = action.payload;
         state.currentOfferLoading = false;
       })
+      .addCase(fetchOfferAction.rejected, (state) => {
+        state.currentOfferLoading = false;
+        state.hasError404 = true;
+      })
       .addCase(fetchOffersNearbyAction.pending, (state, action) => {
         state.offersNearby = [];
         state.offersNearbyLoading = true;
       })
       .addCase(fetchOffersNearbyAction.fulfilled, (state, action) => {
         state.offersNearby = action.payload;
+        state.offersNearbyLoading = false;
+      })
+      .addCase(fetchOffersNearbyAction.rejected, (state) => {
         state.offersNearbyLoading = false;
       })
       .addCase(fetchReviewsAction.pending, (state) => {
@@ -54,14 +57,18 @@ export const propertyData = createSlice({
         state.reviews = action.payload;
         state.reviewsLoading = false;
       })
+      .addCase(fetchReviewsAction.rejected, (state) => {
+        state.reviewsLoading = false;
+      })
       .addCase(addReviewAction.pending, (state) => {
         state.createReviewLoading = true;
       })
       .addCase(addReviewAction.fulfilled, (state, action) => {
         state.reviews = action.payload;
         state.createReviewLoading = false;
+      })
+      .addCase(addReviewAction.rejected, (state) => {
+        state.createReviewLoading = false;
       });
   }
 });
-
-export const { setHasError404 } = propertyData.actions;

@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { AppRoute, PageTitles } from '../../common/constants';
@@ -25,6 +25,8 @@ function PropertyPage(): JSX.Element {
 
   const hasError404 = useAppSelector(getHasError404);
 
+  const [pageInited, setPageInited] = useState(false);
+
   const { id } = useParams();
   const offerId = Number(id);
 
@@ -34,6 +36,7 @@ function PropertyPage(): JSX.Element {
 
   useEffect(() => {
     dispatch(fetchOfferAction(offerId));
+    setPageInited(true);
   }, [offerId, dispatch]);
 
   useEffect(() => {
@@ -43,12 +46,12 @@ function PropertyPage(): JSX.Element {
     dispatch(setActiveOffer(offer));
   }, [dispatch, offer, offerId]);
 
-  if (!offerLoading && (isNaN(offerId) || hasError404)) {
+  if (pageInited && !offerLoading && (isNaN(offerId) || hasError404)) {
     return (<Navigate to={AppRoute.Erorr404} replace />);
   }
 
   // загрузка данных
-  if (offerLoading || !offer) {
+  if (!pageInited || offerLoading || !offer) {
     return (<Spinner />);
   }
 
