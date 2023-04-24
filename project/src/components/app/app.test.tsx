@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { createMemoryHistory } from 'history';
 import { AppRoute, AuthorizationStatus, Cities } from '../../common/constants';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
 import { Action } from '@reduxjs/toolkit';
 import { makeFakeOffer } from '../../common/mocks';
 import { createAPI } from '../../services/api';

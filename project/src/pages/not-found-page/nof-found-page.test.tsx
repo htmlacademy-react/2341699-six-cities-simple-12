@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 import NotFoundPage from './nof-found-page';
-import HistoryRouter from '../../components/history-route/history-route';
+import HistoryRouter from '../../components/history-router/history-router';
 
 const history = createMemoryHistory();
 

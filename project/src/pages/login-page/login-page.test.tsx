@@ -10,7 +10,7 @@ import { AppRoute, AuthorizationStatus } from '../../common/constants';
 import { createAPI } from '../../services/api';
 import { State } from '../../types/state';
 import LoginPage from './login-page';
-import HistoryRouter from '../../components/history-route/history-route';
+import HistoryRouter from '../../components/history-router/history-router';
 
 const history = createMemoryHistory();
 
