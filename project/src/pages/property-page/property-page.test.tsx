@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import thunk, { ThunkDispatch } from 'redux-thunk';
 import { Action } from '@reduxjs/toolkit';
 import MockAdapter from 'axios-mock-adapter';
-import HistoryRouter from '../../components/history-route/history-route';
+import HistoryRouter from '../../components/history-router/history-router';
 import PropertyPage from './property-page';
 import { Route, Routes } from 'react-router';
 import { makeFakeOffer } from '../../common/mocks';

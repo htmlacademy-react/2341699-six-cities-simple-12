@@ -9,7 +9,7 @@ import { AppRoute, Cities } from '../../common/constants';
 import { createAPI } from '../../services/api';
 import { State } from '../../types/state';
 import MainPage from './main-page';
-import HistoryRouter from '../../components/history-route/history-route';
+import HistoryRouter from '../../components/history-router/history-router';
 import { makeFakeOffers } from '../../common/mocks';
 
 const history = createMemoryHistory();
